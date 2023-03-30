@@ -56,8 +56,8 @@ class AppServiceProvider extends ServiceProvider
             return !preg_match('/<.*?>/', $value);
         });
 
-        /* if ($this->app->environment('production')) {
+        if ($this->app->environment('production')) {
             URL::forceScheme('https');
-        } */
+        }
     }
 }
