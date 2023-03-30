@@ -1,0 +1,1 @@
+<?php /**PATH /var/www/html/resources/views/layouts/sidebar-panel/sp-study.blade.php ENDPATH**/ ?>

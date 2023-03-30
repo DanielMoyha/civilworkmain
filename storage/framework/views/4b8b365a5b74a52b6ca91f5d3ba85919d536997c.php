@@ -1,0 +1,68 @@
+<!-- Right Sidebar -->
+<div x-show="$store.global.isRightSidebarExpanded" @keydown.window.escape="$store.global.isRightSidebarExpanded = false">
+    <div class="fixed inset-0 z-[150] bg-slate-900/60 transition-opacity duration-200"
+        @click="$store.global.isRightSidebarExpanded = false" x-show="$store.global.isRightSidebarExpanded"
+        x-transition:enter="ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+        x-transition:leave="ease-in" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"></div>
+    <div class="fixed right-0 top-0 z-[151] h-full w-full sm:w-80">
+        <div x-data="{ activeTab: 'tabHome' }"
+            class="relative flex h-full w-full transform-gpu flex-col bg-white transition-transform duration-200 dark:bg-navy-750"
+            x-show="$store.global.isRightSidebarExpanded" x-transition:enter="ease-out"
+            x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
+            x-transition:leave="ease-in" x-transition:leave-start="translate-x-0"
+            x-transition:leave-end="translate-x-full">
+            <div class="flex items-center justify-between py-2 px-4">
+                <p x-show="activeTab === 'tabHome'" class="flex shrink-0 items-center space-x-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <?php \Carbon\Carbon::setlocale(config('app.locale')); ?>
+                    <span class="text-xs"><?php echo e(__('Hoy, '). now()->translatedFormat('j F Y')); ?></span>
+                </p>
+                
+
+                <button @click="$store.global.isRightSidebarExpanded=false"
+                    class="btn -mr-1 h-6 w-6 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div x-show="activeTab === 'tabHome'" x-transition:enter="transition-all duration-500 easy-in-out"
+                x-transition:enter-start="opacity-0 [transform:translate3d(0,1rem,0)]"
+                x-transition:enter-end="opacity-100 [transform:translate3d(0,0,0)]"
+                class="is-scrollbar-hidden overflow-y-auto overscroll-contain pt-1">
+                
+
+                <div class="mt-3 px-3">
+                    <h2 class="text-xs+ font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100">
+                        <?php echo e(__('Configuración')); ?>
+
+                    </h2>
+                    <div class="mt-2 flex flex-col space-y-2">
+                        <label class="inline-flex items-center space-x-2">
+                            <input x-model="$store.global.isDarkModeEnabled"
+                                class="form-switch h-5 w-10 rounded-lg bg-slate-300 before:rounded-md before:bg-slate-50 checked:bg-slate-500 checked:before:bg-white dark:bg-navy-900 dark:before:bg-navy-300 dark:checked:bg-navy-400 dark:checked:before:bg-white"
+                                type="checkbox" />
+                            <span><?php echo e(__('Modo Oscuro')); ?></span>
+                        </label>
+                        <label class="inline-flex items-center space-x-2">
+                            <input x-model="$store.global.isMonochromeModeEnabled"
+                                class="form-switch h-5 w-10 rounded-lg bg-slate-300 before:rounded-md before:bg-slate-50 checked:bg-slate-500 checked:before:bg-white dark:bg-navy-900 dark:before:bg-navy-300 dark:checked:bg-navy-400 dark:checked:before:bg-white"
+                                type="checkbox" />
+                            <span><?php echo e(__('Modo Monocromático')); ?></span>
+                        </label>
+                    </div>
+                </div>
+
+                
+            </div>
+
+            
+        </div>
+    </div>
+</div><?php /**PATH /var/www/html/resources/views/layouts/right-sidebar.blade.php ENDPATH**/ ?>

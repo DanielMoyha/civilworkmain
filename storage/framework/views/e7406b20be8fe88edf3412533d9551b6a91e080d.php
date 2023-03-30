@@ -1,0 +1,1 @@
+<span class="text-error ml-1">*</span><?php /**PATH /var/www/html/resources/views/components/asterisk.blade.php ENDPATH**/ ?>
