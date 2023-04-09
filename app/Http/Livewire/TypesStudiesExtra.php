@@ -9,13 +9,19 @@ use Livewire\WithPagination;
 class TypesStudiesExtra extends Component
 {
     use WithPagination;
-    public $search = '';
 
+    public $search = '';
     public $type_studies, $name, $description, $type_id;
     public $updateMode = false;
-
     protected $listeners = ['deleteTypeStudy'];
 
+    /**
+     * Elimina un tipo de estudio extra registrado y retorna un mensaje de estado
+     * Si el estudio extra está pertenece a una obra de estudios no se podrá eliminar
+     *
+     * @param  Type  $type_study  - El tipo de estudio a eliminar
+     * @return void
+    */
     public function deleteTypeStudy(Type $type_study)
     {
         if ($type_study->studies()->exists())
@@ -26,7 +32,12 @@ class TypesStudiesExtra extends Component
         session()->flash('status', 'type_study-deleted');
     }
 
-
+    /**
+     * Renderiza la vista para el listado y filtrado de los estudios extras registrado por cada usuario
+     * del área de estudios
+     *
+     * @return \Illuminate\View\View
+    */
     public function render()
     {
         $this->type_studies = Type::all();
@@ -36,12 +47,23 @@ class TypesStudiesExtra extends Component
         ]);
     }
 
-    private function resetInputFields(){
+    /**
+     * Limpia los campos del formulario
+     *
+     * @return void
+    */
+    private function resetInputFields() : void
+    {
         $this->name = '';
         $this->description = '';
     }
 
-    public function store()
+    /**
+     * Registra un nuevo tipo de estudio extra
+     *
+     * @return void
+    */
+    public function store() : void
     {
         $validatedDate = $this->validate([
             'name' => 'required',
@@ -53,7 +75,13 @@ class TypesStudiesExtra extends Component
         $this->resetInputFields();
     }
 
-    public function edit($id)
+    /**
+     * Obtiene los datos de un tipo de estudio extra determinado
+     *
+     * @param int $id - El ID del tipo de estudio extra
+     * @return void
+    */
+    public function edit($id) : void
     {
         $type = Type::findOrFail($id);
         $this->type_id = $id;
@@ -62,13 +90,23 @@ class TypesStudiesExtra extends Component
         $this->updateMode = true;
     }
 
-    public function cancel()
+    /**
+     * Cierra el formulario y limpia los campos del registro o actualización de los tipos de estudios extras
+     *
+     * @return void
+    */
+    public function cancel() : void
     {
         $this->updateMode = false;
         $this->resetInputFields();
     }
 
-    public function update()
+    /**
+     * Actualiza los datos de un tipo de estudio extra
+     *
+     * @return void
+    */
+    public function update() : void
     {
         $validatedDate = $this->validate([
             'name' => 'required',

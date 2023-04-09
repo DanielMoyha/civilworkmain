@@ -18,7 +18,7 @@ class UserRegister extends Component
     public $city_id;
     public $password;
 
-    public function rules()
+    public function rules() : array
     {
         return [
             'name' => 'required|string|max:255',
@@ -31,7 +31,7 @@ class UserRegister extends Component
         ];
     }
 
-    public function messages()
+    public function messages() : array
     {
         return [
             'username.unique' => 'Este nombre de usuario ya existe',
@@ -39,11 +39,21 @@ class UserRegister extends Component
         ];
     }
 
-    public function updated($propertyName)
+    /**
+     * Las validaciones se realizan en cada cambio realizado en los campos del formulario
+     *
+     * @return void
+    */
+    public function updated($propertyName) : void
     {
         $this->validateOnly($propertyName);
     }
 
+    /**
+     * Renderiza la vista del formulario de registro de usuarios
+     *
+     * @return \Illuminate\View\View
+    */
     public function render()
     {
         return view('livewire.user-register');

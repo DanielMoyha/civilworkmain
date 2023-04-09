@@ -12,12 +12,18 @@ class CountryStateCity extends Component
     public $countries;
     public $states;
     public $cities;
-
     public $selectedCountry = null;
     public $selectedState = null;
     public $selectedCity = null;
 
-    public function mount($selectedCity = null)
+    /**
+     * Método para inicializar la propiedad $selectedCity y cargar las opciones
+     * de países, departamentos y ciudades (municipios) para filtrar según corresponda.
+     *
+     * @param int|null $selectedCity - Id de la ciudad seleccionada previamente.
+     * @return void
+    */
+    public function mount($selectedCity = null) : void
     {
         $this->countries = Country::all();
         $this->states = collect();
@@ -35,18 +41,35 @@ class CountryStateCity extends Component
         }
     }
 
+    /**
+     * Renderiza la vista donde se encuentra el filtrado de ciudades por departamento y países
+     *
+     * @return \Illuminate\View\View
+    */
     public function render()
     {
         return view('livewire.country-state-city');
     }
 
-    public function updatedSelectedCountry($country)
+    /**
+     * Actualiza el la lista de los departamentos según el país seleccionado.
+     *
+     * @param int $country - Id del país seleccionado.
+     * @return void
+    */
+    public function updatedSelectedCountry($country) : void
     {
         $this->states = State::where('country_id', $country)->get();
         $this->selectedState = NULL;
     }
 
-    public function updatedSelectedState($state)
+    /**
+     * Actualiza el la lista de las ciudades o municipios según el departamento seleccionado.
+     *
+     * @param int $state - Id del departamento seleccionado.
+     * @return void
+    */
+    public function updatedSelectedState($state) : void
     {
         if (!is_null($state)) {
             $this->cities = City::where('state_id', $state)->get();

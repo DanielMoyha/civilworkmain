@@ -8,17 +8,26 @@ use App\Models\Type;
 use App\Models\Work;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class StudyController extends Controller
 {
+    /**
+     * Muestra la vista de índice de estudios de obra para el DIRECTOR GENERAL.
+     *
+     * @return \Illuminate\View\View
+    */
     public function index()
     {
         return view('admin.studies.index');
     }
 
-    /** Role Study */
+    /**
+     * Muestra el listado de asignaciones de obras a cada usuario del área de estudios en orden descendiente según
+     * la fecha de actualización de obra.
+     *
+     * @return \Illuminate\View\View
+    */
     public function e_assignments()
     {
         $works = Work::where('user_id', auth()->user()->id)->orderByDesc('updated_at')->get();
@@ -28,11 +37,22 @@ class StudyController extends Controller
         ]);
     }
 
+    /**
+     * Muestra el listado de los tipos de estudios extras.
+     *
+     * @return \Illuminate\View\View
+    */
     public function e_type_studies()
     {
         return view('studies.type_studies.index');
     }
 
+    /**
+     * Muestra el detalle de cada asignación de obra juntamente con los tipo de estudios extras ya asignados y el
+     * formulario para asignar nuevos estudios extra en caso de ser necesario.
+     *
+     * @return \Illuminate\View\View
+    */
     public function show_assignment(Study $study)
     {
         $this->authorize('view', $study->work);
@@ -45,6 +65,13 @@ class StudyController extends Controller
         ]);
     }
 
+    /**
+     * Actualiza los estudios extra según los cambios realizados de cada obra de estudio designada.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param \App\Models\Study  $study
+     * @return \Illuminate\Http\RedirectResponse
+    */
     public function update_typeStudies(Request $request, Study $study)
     {
         // dd($request);
@@ -59,6 +86,11 @@ class StudyController extends Controller
         return redirect()->route('study.assignments.show', $study->id)->with('status', 'typeStudies-create');
     }
 
+    /**
+     * Muestra el formulario para subir documentos de un estudio de obra determinado.
+     *
+     * @return \Illuminate\View\View
+    */
     public function e_studies_upload_documents(Study $study)
     {
         // $documents = Document::where('study_id', $study->id);
@@ -71,11 +103,12 @@ class StudyController extends Controller
     }
 
     /**
-        * Sube y guarda archivos para un estudio determinado.
-        *
-        * @param  \Illuminate\Http\Request  $request
-        * @param  \App\Models\Study  $study
-        * @return \Illuminate\Http\RedirectResponse
+     * Sube y almacena archivos para un estudio determinado.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Study  $study
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
     */
     public function e_studies_upload_documents_save(Request $request, Study $study)
     {
@@ -110,5 +143,4 @@ class StudyController extends Controller
 
         return redirect()->back()->with('status','upload-document');
     }
-    /** End Role Study */
 }

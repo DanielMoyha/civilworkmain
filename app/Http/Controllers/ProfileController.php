@@ -4,13 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
 class ProfileController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * Muestra el formulario de actualización de datos del perfil de usuario.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\View\View
@@ -23,7 +22,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update the user's profile information.
+     * Actualiza la información del perfil de usuario.
      *
      * @param  \App\Http\Requests\ProfileUpdateRequest  $request
      * @return \Illuminate\Http\RedirectResponse
@@ -31,11 +30,9 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request)
     {
         $request->user()->fill($request->validated());
-
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
-
         $request->user()->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
@@ -48,7 +45,7 @@ class ProfileController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Request $request)
+    /* public function destroy(Request $request)
     {
         $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current-password'],
@@ -64,5 +61,5 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
-    }
+    } */
 }

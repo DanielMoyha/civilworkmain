@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\City;
 use App\Models\Construction;
-use App\Models\Material;
 use App\Models\State;
 use App\Models\Study;
 use App\Models\Supervision;
 use App\Models\User;
 use App\Models\Work;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
 
 class DashboardController extends Controller
 {
-    /** Director General */
+    /**
+     * Muestra los resultados del reporte sobre los usuarios y obras en general
+     * para ser mostrados en el dashboard principal.
+     *
+     * @return \Illuminate\View\View
+    */
     public function index()
     {
         // $memoryBefore = memory_get_usage();
@@ -85,40 +86,48 @@ class DashboardController extends Controller
         ]);
     }
 
+    /**
+     * Devuelve la cantidad en bytes y MB de memoria disponible del sistema y durante el procesamiento de una tarea.
+     *
+     * @return \Illuminate\Http\JsonResponse
+    */
     protected function calculateMemoryUsed()
     {
-        // Obtener la cantidad total de memoria disponible en el sistema
-        $totalMemory = memory_get_peak_usage(true);
-        // Obtener la cantidad de memoria utilizada antes de procesar los datos
-        $memoryBefore = memory_get_usage();
+        $totalMemory = memory_get_peak_usage(true); // Obtener la cantidad total de memoria disponible en el sistema
+        $memoryBefore = memory_get_usage(); // Obtener la cantidad de memoria utilizada antes de procesar los datos
 
-        // call function
-        $this->index();
+        $this->index(); // llamar a la función a ser evaluada
 
-        // Obtener la cantidad de memoria utilizada después de procesar los datos
-        $memoriaAfter = memory_get_usage();
-        // Calcular la cantidad de memoria utilizada durante el procesamiento
-        $memoryUsed = $memoriaAfter - $memoryBefore;
+        $memoriaAfter = memory_get_usage(); // Obtener la cantidad de memoria utilizada después de procesar los datos
+        $memoryUsed = $memoriaAfter - $memoryBefore; // Calcular la cantidad de memoria utilizada durante el procesamiento
 
         //convert bytes to MB
         $MU_MB = $this->convert_MB($memoryUsed);
         $TM_MB = $this->convert_MB($totalMemory);
 
         $info = [
-            // 'Memoria displonible en el sistema' => round($hola, 3),
             'Memoria displonible en el sistema' => $totalMemory . " bytes => " . round($TM_MB, 2) . " MB",
             'Memoria utilizada durante el procesamiento' => $memoryUsed . " bytes => " . round($MU_MB, 3) . " MB",
         ];
 
-        // Devolver la información en forma de objeto JSON
-        return response()->json($info);
+        return response()->json($info); // Devolver la información en forma de objeto JSON
     }
 
-    protected function convert_MB($value)
+    /**
+     * Convierte un valor en bytes a megabytes dividiéndolo por 1024*1024.
+     * @param int $value El valor en bytes a convertir.
+     * @return float El valor en megabytes.
+    */
+    protected function convert_MB($value) : float
     {
         return $value / (1024 * 1024);
     }
 
+    /**
+     * Muestra los resultados del reporte sobre las obras civiles a más detalle en el dashboard de obras
+     *
+     * @return \Illuminate\View\View
+    */
     public function works()
     {
         $months = Work::months();
@@ -206,25 +215,36 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function constructionAssignments($type)
+    /**
+     * Devuelve un array de asignaciones de construcción según el tipo de trabajo.
+     *
+     * @param string $type Tipo de trabajo.
+     * @return array Array de asignaciones de construcción.
+    */
+    public function constructionAssignments($type) : array
     {
+        // Recuperar las asignaciones de cada área según el tipo de trabajo especificado, ordenarlas por fecha de creación y filtrarlas para que solo se incluyan las del año actual.
         $constructionAssignment = Work::assignmentContructionArea()
                                     ->typeWork($type)
                                     ->orderBy('created_at')
                                     ->currentYear()->get()
                                     // ->whereYear('created_at','2023')->get()
+                                    // Agrupar las asignaciones por mes
                                     ->groupBy(function ($date) {
                                             return $date->created_at->month;
                                         }
                                     )
+                                    // Contar el número de asignaciones por mes
                                     ->map(function ($group) {
                                             return $group->count();
                                         }
                                     )
+                                    // Agregar ceros para los meses que no tienen asignaciones con "union" y "array_fill".
                                     ->union(array_fill(1, 12, 0))
+                                     // Ordenar los elementos del array por mes
                                     ->sortKeys()
+                                     // Convertir el array en un array indexado numéricamente
                                     ->toArray();
         return (array_values($constructionAssignment));
     }
-    /** END Director General */
 }

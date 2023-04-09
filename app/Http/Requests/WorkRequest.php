@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class WorkRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determina si el usuario está autorizado a realizar esta solicitud
      *
      * @return bool
      */
@@ -17,7 +17,7 @@ class WorkRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Obtiene las reglas de validación que se aplican a la solicitud
      *
      * @return array<string, mixed>
      */
@@ -39,6 +39,11 @@ class WorkRequest extends FormRequest
         ];
     }
 
+    /**
+     * Obtiene los mensajes de validación para cada regla que se aplica a la solicitud
+     *
+     * @return array<string, mixed>
+     */
     public function messages()
     {
         return [

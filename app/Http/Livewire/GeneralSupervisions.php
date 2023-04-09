@@ -13,6 +13,11 @@ class GeneralSupervisions extends Component
     public $search = '';
     public $supervisions;
 
+    /**
+     * Renderiza la vista para el listado y filtrado general de todas las obras de supervisión para el DIRECTOR GENERAL
+     *
+     * @return \Illuminate\View\View
+    */
     public function render()
     {
         /* $exists =  Storage::disk('public')->get('followUp/');

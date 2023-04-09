@@ -9,11 +9,18 @@ use Livewire\WithPagination;
 class Works extends Component
 {
     use WithPagination;
+
     public $search = '';
     public $table_works;
     protected $listeners = ['deregistering_work', 'enable_work'];
 
-    public function deregistering_work(Work $work)
+    /**
+     * Da de baja una obra civil determinada
+     *
+     * @param \App\Models\Work  $work
+     * @return void
+    */
+    public function deregistering_work(Work $work) : void
     {
         $value = 0;
         $work->update([
@@ -21,7 +28,13 @@ class Works extends Component
         ]);
     }
 
-    public function enable_work(Work $work)
+    /**
+     * Habilita una obra civil determinada que está en estado de baja
+     *
+     * @param \App\Models\Work  $work
+     * @return void
+    */
+    public function enable_work(Work $work) : void
     {
         $value = 1;
         $work->update([
@@ -29,6 +42,11 @@ class Works extends Component
         ]);
     }
 
+    /**
+     * Renderiza la vista para el listado y filtrado de todas las obras civiles registradas en el sistema
+     *
+     * @return \Illuminate\View\View
+    */
     public function render()
     {
         $this->table_works = Work::all();

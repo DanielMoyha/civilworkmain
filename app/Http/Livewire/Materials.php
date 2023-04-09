@@ -9,6 +9,7 @@ use Livewire\Component;
 class Materials extends Component
 {
     use WithPagination;
+
     public $search = '';
     public $materials;
     public $name;
@@ -16,9 +17,15 @@ class Materials extends Component
     public $remarks;
     public $material_id;
     public $updateMode = false;
-
     protected $listeners = ['deleteMaterial'];
 
+    /**
+     * Elimina un material y retorna un mensaje de estado
+     * Si el material está pertenece a una obra de construcción no se podrá eliminar
+     *
+     * @param  Material  $material  - El material a eliminar
+     * @return void
+    */
     public function deleteMaterial(Material $material)
     {
         if ($material->constructions()->exists())
@@ -29,6 +36,11 @@ class Materials extends Component
         session()->flash('status', 'material-deleted');
     }
 
+    /**
+     * Renderiza la vista para el listado y filtrado de todos los materiales de construcción
+     *
+     * @return \Illuminate\View\View
+    */
     public function render()
     {
         $this->materials = Material::all();
@@ -38,14 +50,24 @@ class Materials extends Component
         ]);
     }
 
-    private function resetInputFields()
+    /**
+     * Limpia los campos del formulario
+     *
+     * @return void
+    */
+    private function resetInputFields() : void
     {
         $this->name = '';
         $this->quantity = '';
         $this->remarks = '';
     }
 
-    public function store()
+    /**
+     * Registra un nuevo material de construcción
+     *
+     * @return void
+    */
+    public function store() : void
     {
         $validatedDate = $this->validate([
             'name' => 'required',
@@ -60,7 +82,13 @@ class Materials extends Component
         $this->resetInputFields();
     }
 
-    public function edit($id)
+    /**
+     * Obtiene los datos de un material determinado
+     *
+     * @param int $id - El ID del material
+     * @return void
+    */
+    public function edit($id) : void
     {
         $material = Material::findOrFail($id);
         $this->material_id = $id;
@@ -70,15 +98,25 @@ class Materials extends Component
         $this->updateMode = true;
     }
 
-    public function cancel()
+    /**
+     * Cierra el formulario y limpia los campos del registro o actualización de materiales
+     *
+     * @return void
+    */
+    public function cancel() : void
     {
         $this->updateMode = false;
         $this->resetInputFields();
     }
 
-    public function update()
+    /**
+     * Actualiza los datos de un material
+     *
+     * @return void
+    */
+    public function update() : void
     {
-        $validatedDate = $this->validate([
+        $this->validate([
             'name' => 'required',
             'quantity' => 'required',
             'remarks' => 'nullable',

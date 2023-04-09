@@ -21,7 +21,7 @@ class AuthServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Register any authentication / authorization services.
+     * Mensaje enviado al correo electrónico de los usuario para que pueda verificar su registro en el sistema
      *
      * @return void
      */

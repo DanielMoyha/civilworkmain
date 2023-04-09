@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Password;
 class PasswordResetLinkController extends Controller
 {
     /**
-     * Display the password reset link request view.
+     * Muestra la vista de solicitud de enlace de restablecimiento de contraseña.
      *
      * @return \Illuminate\View\View
      */
@@ -19,7 +19,7 @@ class PasswordResetLinkController extends Controller
     }
 
     /**
-     * Handle an incoming password reset link request.
+     * Gestiona la solicitud de enlace de restablecimiento de contraseña entrante.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
@@ -32,9 +32,7 @@ class PasswordResetLinkController extends Controller
             'email' => ['required', 'email'],
         ]);
 
-        // We will send the password reset link to this user. Once we have attempted
-        // to send the link, we will examine the response then see the message we
-        // need to show to the user. Finally, we'll send out a proper response.
+        // Se enviará el enlace de restablecimiento de contraseña al usuario. Una vez que se haya intentado enviar el enlace, se examinará la respuesta y ver el mensaje que se necesita mostrar al usuario. Finalmente, se envierá una respuesta apropiada.
         $status = Password::sendResetLink(
             $request->only('email')
         );

@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 class ConfirmablePasswordController extends Controller
 {
     /**
-     * Show the confirm password view.
+     * Muestra la vista de confirmar contraseña.
      *
      * @return \Illuminate\View\View
      */
@@ -21,7 +21,7 @@ class ConfirmablePasswordController extends Controller
     }
 
     /**
-     * Confirm the user's password.
+     * El usuario confirma su contraseña
      *
      * @param  \Illuminate\Http\Request  $request
      * @return mixed

@@ -14,11 +14,21 @@ class PasswordGenerate extends Component
         $this->visible = false;
     } */
 
+    /**
+     * Renderiza la vista del componente para generar contraseñas aleatorias
+     *
+     * @return \Illuminate\View\View
+    */
     public function render()
     {
         return view('livewire.password-generate');
     }
 
+    /**
+     * Genera aleatoriamente una contraseña de 8 caracteres
+     *
+     * @return void
+    */
     public function generatePassword() : void
     {
         $lowercase = range('a', 'z');
@@ -45,7 +55,13 @@ class PasswordGenerate extends Component
         $this->visible = !$this->visible;
     } */
 
-    public function setPasswords($value)
+    /**
+     * Establece el campo de contraseña
+     *
+     * @param  string  $value
+     * @return void
+    */
+    public function setPasswords($value) : void
     {
         $this->password = $value;
         // $this->password_confirmation = $value;

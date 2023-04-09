@@ -8,27 +8,24 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
+    /**
+     * Muestra la lista de todos los roles del sistema.
+     *
+     * @return \Illuminate\View\View
+    */
     public function index()
     {
         $roles = Role::all();
-
-        //Usuarios con el mismo rol
-        /* foreach ($roles as $role) {
-            foreach ($role->users as $user) {
-                $words = explode(' ', $user->name);
-                $acronym = '';
-                foreach ($words as $w) {
-                    $acronym .= mb_substr($w, 0, 1);
-                }
-            }
-        } */
-
         return view('admin.roles.index', [
             'roles' => $roles,
-            // 'acronym' => $acronym
         ]);
     }
 
+    /**
+     * Muestra el formulario de registro de un nuevo rol juntamente con los permisos a ser asignados.
+     *
+     * @return \Illuminate\View\View
+    */
     public function create()
     {
         $permissions = Permission::all();
@@ -40,6 +37,13 @@ class RoleController extends Controller
         ]);
     }
 
+    /**
+     * Almacena el rol creado en la base de datos.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
+    */
     public function store(Request $request)
     {
         $request->validate([
@@ -47,16 +51,12 @@ class RoleController extends Controller
             'description' => ['required', 'string', 'max:150']
         ]);
 
-        //se crea el nuevo rol
         $role = Role::create([
             'name' => $request->name,
             'description' => $request->description,
         ]);
 
-        //y asignamos los permisos seleccionados al rol creado
-        $role->permissions()->sync($request->permissions);
-
-        // return redirect()->route('admin.roles.edit', $role)->with('Datos Guardados Correctamente');
+        $role->permissions()->sync($request->permissions); //asignación de permisos al rol creado.
         return redirect()->route('admin.roles.index')->with('status','role-created');
     }
 
@@ -65,6 +65,12 @@ class RoleController extends Controller
         return view('admin.roles.show');
     } */
 
+    /**
+     * Muestra el formulario de actualización de un rol determinado juntamente con los permisos prellenados
+     * registrados anteriormente.
+     *
+     * @return \Illuminate\View\View
+    */
     public function edit(Role $role)
     {
         $permissions = Permission::all();
@@ -76,6 +82,14 @@ class RoleController extends Controller
         ]);
     }
 
+    /**
+     * Actualiza los cambios realizados de un rol determinado.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  Spatie\Permission\Models\Role $role
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
+    */
     public function update(Request $request, Role $role)
     {
         $request->validate([
@@ -83,12 +97,16 @@ class RoleController extends Controller
             'description' => 'required'
         ]);
         $role->update($request->all());
-        //y asignamos los permisos seleccionados al rol creado
         $role->permissions()->sync($request->permissions);
-
         return redirect()->route('admin.roles.edit', $role)->with('Datos Guardados Correctamente');
     }
 
+    /**
+     * Elimina un rol determinado del sistema.
+     *
+     * @param  Spatie\Permission\Models\Role $role
+     * @return \Illuminate\Http\RedirectResponse
+    */
     public function destroy(Role $role)
     {
         $role->delete();

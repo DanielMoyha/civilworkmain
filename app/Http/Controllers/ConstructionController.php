@@ -10,19 +10,21 @@ use Illuminate\Http\Request;
 class ConstructionController extends Controller
 {
     /**
-        * Muestra la vista de índice de construcciones para el panel de administración.
-        *
-        * @return \Illuminate\View\View
+     * Muestra el litado de todas las construcciones de obra para el DIRECTOR GENERAL.
+     *
+     * @return \Illuminate\View\View
     */
-    /** Director General */
     public function index()
     {
         return view('admin.construcions.index');
     }
-    /** End - Director General */
 
-
-    /** Constructores */
+    /**
+     * Muestra el listado de asignaciones de obras a cada usuario del área de construcción en orden descendiente tomando
+     * en cuenta la fecha de actualización de obra.
+     *
+     * @return \Illuminate\View\View
+    */
     public function c_assignments()
     {
         $works = Work::where('user_id', auth()->user()->id)->orderByDesc('updated_at')->get();
@@ -31,6 +33,12 @@ class ConstructionController extends Controller
         ]);
     }
 
+    /**
+     * Muestra el detalle de una construcción de obra determinada.
+     *
+     * @param \App\Models\Construction  $construction
+     * @return \Illuminate\View\View
+    */
     public function show_assignment(Construction $construction)
     {
         return view('builders.allowances.show', [
@@ -38,7 +46,12 @@ class ConstructionController extends Controller
         ]);
     }
 
-    //registered new materials to table 'materials'
+    /**
+     * Muestra el listado de materiales de construcción de una obra de construcción determinada.
+     *
+     * @param \App\Models\Construction  $construction
+     * @return \Illuminate\View\View
+    */
     public function c_materials(Construction $construction)
     {
         return view('builders.materials.index', [
@@ -46,6 +59,12 @@ class ConstructionController extends Controller
         ]);
     }
 
+    /**
+     * Muestra el formulario de asignación de materiales de construcción a una obra de construcción determianda.
+     *
+     * @param \App\Models\Construction  $construction
+     * @return \Illuminate\View\View
+    */
     public function c_materials_construction(Construction $construction)
     {
         $this->authorize('view', $construction->work);
@@ -58,7 +77,14 @@ class ConstructionController extends Controller
         ]);
     }
 
-    //el registro es en la tabla construcciones
+    /**
+     * Guarda y actualiza los cambios pertinentes a la asignación de materiales de contrucción de una obra de
+     * construcción determinada.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param \App\Models\Construction  $construction
+     * @return \Illuminate\Http\RedirectResponse
+    */
     public function update_materials_construction(Request $request, Construction $construction)
     {
         // dd($request->all());
@@ -73,5 +99,4 @@ class ConstructionController extends Controller
 
         return redirect()->back()->with('status', 'materials-action');
     }
-    /** END - Constructores */
 }

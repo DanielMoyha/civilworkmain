@@ -12,6 +12,11 @@ class GeneralStudies extends Component
     public $search = '';
     public $studies;
 
+    /**
+     * Renderiza la vista para el listado y filtrado general de todos los estudios de obra para el DIRECTOR GENERAL
+     *
+     * @return \Illuminate\View\View
+    */
     public function render()
     {
         $this->studies = Study::all();

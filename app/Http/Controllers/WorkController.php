@@ -14,17 +14,27 @@ use App\Models\User;
 use App\Models\Work;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
-use PhpOffice\PhpSpreadsheet\Style\Supervisor;
 
 class WorkController extends Controller
 {
     use WithPagination;
-    /** Director General */
+
+    /**
+     * Muestra la lista de obras civiles para el director general.
+     *
+     * @return \Illuminate\View\View
+    */
     public function index()
     {
         return view('admin.works.index');
     }
 
+    /**
+     * Muestra el formulario de registro de obras civiles, juntamente con el listado de los tipos de obras,
+     * encargados según el rol, los consultores asociados y los servicios, para su correspondiente selección.
+     *
+     * @return \Illuminate\View\View
+    */
     public function create()
     {
         $users = User::where('is_active', 1)->where('id', '!=', 1)->get();
@@ -39,6 +49,13 @@ class WorkController extends Controller
         ]);
     }
 
+    /**
+     * Registra los datos llenados en el formulario de registro de obras civiles y almacena la información
+     * en otras tablas según el tipo de obra de la función "addCustom()".
+     *
+     * @param  App\Http\Requests\WorkRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
+    */
     public function store(WorkRequest $request)
     {
         // dd($request->all());
@@ -60,6 +77,11 @@ class WorkController extends Controller
         return redirect()->route('admin.works.index')->with('status', 'work-created');
     }
 
+    /**
+     * Registra la obra según el tipo de obra seleccionado en el formulario.
+     *
+     * @param $work
+    */
     public function addCustom($work) : void
     {
         if ($work->type_work_id === '1') {
@@ -73,21 +95,43 @@ class WorkController extends Controller
         }
     }
 
+    /**
+     * En caso de que la obra sea de tipo "Construcción" se registra tambien en la tabla de "constructions"
+     *
+     * @param $work
+    */
     public function addConstruction($work) : void
     {
         Construction::create(['work_id'=> $work->id, 'name' => $work->name]);
     }
 
+    /**
+     * En caso de que la obra sea de tipo "Estudio" se registra tambien en la tabla de "studies"
+     *
+     * @param $work
+    */
     public function addStudy($work) : void
     {
         Study::create(['work_id'=> $work->id, 'name' => $work->name]);
     }
 
+    /**
+     * En caso de que la obra sea de tipo "Supervisión" se registra tambien en la tabla de "supervisions"
+     *
+     * @param $work
+    */
     public function addSupervision($work) : void
     {
         Supervision::create(['work_id'=> $work->id, 'name' => $work->name]);
     }
 
+    /**
+     * Muestra el formulario de actualización de una obra civil en específica con los datos prellenados de acuerdo
+     * con el registro realizado anteriormente.
+     *
+     * @param \App\Models\Work $work - La obra civil a ser actualizada
+     * @return \Illuminate\View\View
+    */
     public function edit(Work $work)
     {
         $users = User::where('is_active', 1)->where('id', '!=', 1)->get();
@@ -107,6 +151,14 @@ class WorkController extends Controller
         ]);
     }
 
+    /**
+     * Actualiza los datos llenados en el formulario de actualización de obras civiles y según el tipo de obra
+     * también se actualizan en las tablas correspondientes a estas.
+     *
+     * @param  App\Http\Requests\WorkRequest  $request
+     * @param \App\Models\Work $work
+     * @return \Illuminate\Http\RedirectResponse
+    */
     public function update(WorkRequest $request, Work $work)
     {
         $work->update($request->all());
@@ -131,6 +183,12 @@ class WorkController extends Controller
         return redirect()->route('admin.works.index')->with('status', 'work-updated');
     }
 
+    /**
+     * Muestra más detalles de toda la información alamcenada de cada obra
+     *
+     * @param \App\Models\Work $work - La obra civil a ser mostrada
+     * @return \Illuminate\View\View
+    */
     public function show(Work $work)
     {
         $this->authorize('view', $work);
@@ -139,10 +197,13 @@ class WorkController extends Controller
         ]);
     }
 
+    /**
+     * Exporta la información de todas las obras civiles en formato de Excel
+     *
+     * @return App\Exports\WorksDataExport
+    */
     public function exportExcel()
     {
         return Excel::download(new WorksDataExport, 'obras-civiles.xlsx');
     }
-    /** END Director General */
-
 }

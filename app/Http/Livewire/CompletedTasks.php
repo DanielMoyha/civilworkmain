@@ -18,24 +18,44 @@ class CompletedTasks extends Component
         'taskCompleted'
     ];
 
-    public function mount($supervision_id)
+    /**
+     * Se ejecuta al inicializar el componente
+     *
+     * @param int $supervision_id - El id de la supervisión a utilizar
+     * @return void
+    */
+    public function mount($supervision_id) : void
     {
         $supervision_id = Supervision::find($this->supervision_id);
-        // $this->a = $supervision_id;
         $this->getTasks();
     }
 
-    public function taskAdded()
+    /**
+     * Agrega una nueva tarea y actualiza la lista de tareas
+     *
+     * @return void
+    */
+    public function taskAdded() : void
     {
         $this->getTasks();
     }
 
-    public function taskCompleted()
+    /**
+     * Marca la tarea actual como completada y actualiza la lista de tareas
+     *
+     * @return void
+    */
+    public function taskCompleted() : void
     {
         $this->getTasks();
     }
 
-    public function getTasks()
+    /**
+     * Obtiene todas las tareas según la supervisión de obra visitada
+     *
+     * @return void
+    */
+    public function getTasks() : void
     {
         // $a = Supervision::find($this->supervision_id);
         $tasks = Control::where('completed_at', '!=', null)
@@ -51,12 +71,24 @@ class CompletedTasks extends Component
         $this->tasks = $tasks;
     }
 
-    public function getTask($id)
+    /**
+     * Obtiene la tarea correspondiente al ID proporcionado
+     *
+     * @param int $id - El ID de la tarea a obtener
+     * @return void
+    */
+    public function getTask($id) : void
     {
         $this->task = Control::find($id);
     }
 
-    public function returnTask($id)
+    /**
+     * Marca una tarea como "devuelta", cambiando su estado a "no completada".
+     *
+     * @param int $id - El ID de la tarea a devolver.
+     * @return void
+    */
+    public function returnTask($id) : void
     {
         $this->getTask($id);
         $this->task->supervision_id;
@@ -66,13 +98,24 @@ class CompletedTasks extends Component
         $this->emit('taskReturned');
     }
 
-    public function deleteTask($id)
+    /**
+     * Elimina la tarea correspondiente al ID proporcionado
+     *
+     * @param int $id - El ID de la tarea a obtener
+     * @return void
+    */
+    public function deleteTask($id) : void
     {
         $this->getTask($id);
         $this->task->delete();
         $this->mount($id);
     }
 
+    /**
+     * Renderiza la vista para el cumplimiento de tareas de una supervisión de obra determinada
+     *
+     * @return \Illuminate\View\View
+    */
     public function render()
     {
         return view('livewire.completed-tasks');

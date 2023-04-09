@@ -10,7 +10,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 class VerifyEmailController extends Controller
 {
     /**
-     * Mark the authenticated user's email address as verified.
+     * Marca la dirección de correo electrónico del usuario autenticado como verificada en la base de datos
      *
      * @param  \Illuminate\Foundation\Auth\EmailVerificationRequest  $request
      * @return \Illuminate\Http\RedirectResponse

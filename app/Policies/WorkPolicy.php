@@ -23,7 +23,7 @@ class WorkPolicy
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Determina si el usuario puede ver una obra dada de baja
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Work  $work

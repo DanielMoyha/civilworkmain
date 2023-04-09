@@ -13,6 +13,11 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+    /**
+     * Muestra la lista de todos los usuarios registrados.
+     *
+     * @return \Illuminate\View\View
+    */
     public function index()
     {
         $users = User::all();
@@ -21,11 +26,23 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Muestra la vista del formulario para el registro de usuarios.
+     *
+     * @return \Illuminate\View\View
+    */
     public function create()
     {
         return view('admin.users.create');
     }
 
+    /**
+     * Registra los datos llenados en el formulario de registro de usuarios y retonar el mensaje de éxito.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
+    */
     public function store(Request $request)
     {
         //dd($request->all());
@@ -63,6 +80,12 @@ class UserController extends Controller
         return redirect()->route('admin.users.editRole', $user)->with('status','user-registered')->header('X-Response-Time', $responseTimeInSecs);
     }
 
+    /**
+     * Muestra el formulario de actualización de un usuario específico.
+     *
+     * @param  \App\Models\User  $user - El usuario a ser editado
+     * @return \Illuminate\View\View
+    */
     public function edit(User $user)
     {
         return view('admin.users.edit-all', [
@@ -70,6 +93,13 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Muestra el formulario de actualización del rol de un usuario específico junto con sus roles y los permisos
+     * correspondientes.
+     *
+     * @param  \App\Models\User  $user - El rol de usuario a ser editado
+     * @return \Illuminate\View\View
+    */
     public function editRole(User $user)
     {
         $roles = Role::all();
@@ -82,12 +112,13 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza los datos de un usuario específico.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
+    */
     public function update(Request $request, User $user)
     {
         // dd($request->all());
@@ -102,10 +133,16 @@ class UserController extends Controller
         ]);
 
         $user->update($request->all());
-        // $user->fill($request->post())->save();
         return redirect()->route('admin.users.index', $user)->with('status', 'user-updated');
     }
 
+    /**
+     * Actualiza los datos del rol de un usuario específico.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+    */
     public function updateRole(Request $request, User $user)
     {
         //sync se encargará de colocar nuevos registros en la tabla intermedia 'model_has_roles'
@@ -120,9 +157,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    /* public function destroy(User $user)
     {
         $user->delete();
         return redirect()->route('admin.users.index')->with('info', 'Usuario eliminado correctamente');
-    }
+    } */
 }

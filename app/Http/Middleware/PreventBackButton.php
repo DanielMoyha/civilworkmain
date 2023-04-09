@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class PreventBackButton
 {
     /**
-     * Handle an incoming request.
+     * Deshabilita el botón para volver atrás después de iniciar sesión
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next

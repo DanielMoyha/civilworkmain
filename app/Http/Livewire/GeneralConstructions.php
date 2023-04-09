@@ -12,6 +12,11 @@ class GeneralConstructions extends Component
     public $search = '';
     public $constructions;
 
+    /**
+     * Renderiza la vista para el listado y filtrado de todas las obras de construcción para el DIRECTOR GENERAL
+     *
+     * @return \Illuminate\View\View
+    */
     public function render()
     {
         $this->constructions = Construction::all();

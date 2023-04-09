@@ -2,21 +2,18 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\User;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
-use Illuminate\Support\Facades\Auth;
 
 class Authenticate extends Middleware
 {
     /**
-     * Get the path the user should be redirected to when they are not authenticated.
+     * Obtiene la ruta a la que el usuario debe ser redirigido cuando no está autenticado
      *
      * @param  \Illuminate\Http\Request  $request
      * @return string|null
      */
     protected function redirectTo($request)
     {
-        // $userInhabilitado = User::where('is_active', 1)->get();
         if (! $request->expectsJson()) {
             return route('login');
         }

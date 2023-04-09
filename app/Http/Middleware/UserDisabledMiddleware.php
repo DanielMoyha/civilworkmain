@@ -10,7 +10,7 @@ use Illuminate\Validation\ValidationException;
 class UserDisabledMiddleware
 {
     /**
-     * Handle an incoming request.
+     * Los usuarios que tengan la cuenta deshabilitada no podrán acceder al sistema
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next

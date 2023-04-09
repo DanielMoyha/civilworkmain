@@ -16,11 +16,22 @@ class Services extends Component
 
     protected $listeners = ['deleteService'];
 
-    public function deleteService(Service $service)
+    /**
+     * Elimina un servicio
+     *
+     * @param  \App\Models\Service  $service  - El servicio a eliminar
+     * @return void
+    */
+    public function deleteService(Service $service) : void
     {
         $service->delete();
     }
 
+    /**
+     * Renderiza la vista para el listado y filtrado de todos los servicios para ofrecer en las obras civiles
+     *
+     * @return \Illuminate\View\View
+    */
     public function render()
     {
         // sleep(0.3);
@@ -31,12 +42,22 @@ class Services extends Component
         ]);
     }
 
-    private function resetInputFields()
+    /**
+     * Limpia los campos del formulario
+     *
+     * @return void
+    */
+    private function resetInputFields() : void
     {
         $this->name = '';
     }
 
-    public function store()
+    /**
+     * Registra un nuevo servicio
+     *
+     * @return void
+    */
+    public function store() : void
     {
         $validatedDate = $this->validate([
             'name' => 'required',
@@ -47,7 +68,13 @@ class Services extends Component
         $this->resetInputFields();
     }
 
-    public function edit($id)
+    /**
+     * Obtiene los datos de un servicio determinado
+     *
+     * @param int $id - El ID del servicio
+     * @return void
+    */
+    public function edit($id) : void
     {
         $service = Service::findOrFail($id);
         $this->service_id = $id;
@@ -55,17 +82,25 @@ class Services extends Component
         $this->updateMode = true;
     }
 
-    public function cancel()
+    /**
+     * Cierra el formulario y limpia los campos del registro o actualización de servicios
+     *
+     * @return void
+    */
+    public function cancel() : void
     {
         $this->updateMode = false;
         $this->resetInputFields();
     }
 
-    public function update()
+    /**
+     * Actualiza los datos de un servicio determiando
+     *
+     * @return void
+    */
+    public function update() : void
     {
-        $validatedDate = $this->validate([
-            'name' => 'required',
-        ]);
+        $this->validate(['name' => 'required']);
 
         $service = Service::find($this->service_id);
         $service->update([
