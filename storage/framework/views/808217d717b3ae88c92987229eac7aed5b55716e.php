@@ -57,40 +57,57 @@
                                     <div class="flex items-center justify-between bg-slate-150 px-4 py-4 dark:bg-navy-500 sm:px-5">
                                         <div class="flex items-center space-x-3.5 tracking-wide outline-none transition-all">
                                             <div class="avatar h-10 w-10" x-tooltip.on.mouseenter="'<?php echo e($work->city->name.' - '.$work->city->state->name); ?>'">
-                                                <div class="is-initial rounded-full bg-success uppercase text-white">
+                                                <div class="is-initial rounded-full bg-success dark:bg-accent-focus uppercase text-white">
                                                     <?php echo e($work->city->state->code); ?>
 
                                                 </div>
                                             </div>
                                             <div>
                                                 <p class="text-xs text-slate-300 italic dark:text-navy-500">
-                                                    <?php echo e($work->updated_at->diffForHumans()); ?>
+                                                    <?php echo e('hace ' . $work->updated_at->diffForHumans(null, true)); ?>
 
-                                                    </p>
+                                                </p>
                                                 <p class="text-slate-700 line-clamp-1 dark:text-navy-100">
-                                                <?php echo e($work->name); ?>
+                                                    <?php echo e($work->name); ?>
 
                                                 </p>
                                                 <p class="text-xs text-slate-500 line-clamp-1 dark:text-navy-300">
-                                                <?php echo e($work->description); ?>
+                                                    <?php echo e($work->description); ?>
 
                                                 </p>
-                                                
                                             </div>
                                         </div>
-                                        <button
-                                            @click="expanded = !expanded"
-                                            class="btn -mr-1.5 h-8 w-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25"
-                                        >
-                                            <i
-                                                :class="expanded && '-rotate-180'"
-                                                class="fas fa-chevron-down text-sm transition-transform"
-                                            ></i>
-                                        </button>
+                                        <?php if($work->completion_date): ?>
+                                            <a  href="<?php echo e(route('supervision.assignments.show', [$work->supervision->id])); ?>"
+                                                class="btn -mr-1.5 h-8 w-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25" x-tooltip.success.on.mouseenter="'<?php echo e(__('Obra concluida')); ?>'" >
+                                                <i class="fa-solid fa-eye text-success text-sm+"></i>
+                                            </a>
+                                        <?php else: ?>
+                                            <button
+                                                @click="expanded = !expanded"
+                                                class="btn -mr-1.5 h-8 w-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25"
+                                            >
+                                                <i
+                                                    :class="expanded && '-rotate-180'"
+                                                    class="fas fa-chevron-down text-sm transition-transform"
+                                                ></i>
+                                            </button>
+                                        <?php endif; ?>
                                     </div>
                                     <div x-collapse x-show="expanded">
                                         <div class="px-4 py-4 sm:px-5">
-                                            <p class="text-slate-900 dark:text-navy-200 font-bold pb-2"><?php echo e($work->services->count() . __(' SERVICIOS:')); ?></p>
+                                            <div class="flex justify-between">
+                                                <p class="text-slate-900 dark:text-navy-200 font-bold pb-2">
+                                                    <?php echo e($work->services->count() . __(' SERVICIOS:')); ?>
+
+                                                </p>
+                                                <div class="flex justify-end gap-2 text-xs mb-1">
+                                                    <a href="<?php echo e(route('supervision.assignments.show', [$work->supervision->id])); ?>" class="btn bg-accent dark:bg-success font-medium text-white hover:dark:bg-success-focus focus:dark:bg-success-focus active:dark:bg-success-focus/90 hover:bg-accent-focus focus:bg-accent-focus active:bg-accent-focus/90 px-2.5">
+                                                        <i class="fa-solid fa-clipboard-list pr-2"></i> <?php echo e(__('Ver Detalles')); ?>
+
+                                                    </a>
+                                                </div>
+                                            </div>
                                             <p>
                                                 <?php $__currentLoopData = $work->services; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $service): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                     <div class="space-x-2.5 line-clamp-1 text-slate-600 dark:text-navy-100">
@@ -99,14 +116,6 @@
                                                     </div>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </p>
-                                            <div class="mt-4 flex justify-end gap-2">
-                                                <a href="<?php echo e(route('supervision.assignments.show', [$work->supervision->id])); ?>"
-                                                    class="btn bg-info font-medium text-white hover:bg-info-focus focus:bg-info-focus active:bg-info-focus/90"
-                                                >
-                                                    Ver Detalles
-                                                </a>
-                                                
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -121,14 +130,14 @@
                                     <div class="bg-slate-150 dark:bg-navy-500 flex items-center justify-between px-4 py-4 sm:px-5 opacity-50">
                                         <div class="flex items-center space-x-3.5 tracking-wide outline-none transition-all">
                                             <div class="avatar h-10 w-10" x-tooltip.on.mouseenter="'<?php echo e($work->city->state->name.' -> '.$work->city->name); ?>'">
-                                                <div class="is-initial rounded-full bg-success uppercase text-white">
+                                                <div class="is-initial rounded-full bg-success dark:bg-accent-focus uppercase text-white">
                                                     <?php echo e($work->city->state->code); ?>
 
                                                 </div>
                                             </div>
                                             <div>
                                                 <p class="text-xs text-slate-300 italic dark:text-navy-500">
-                                                    <?php echo e($work->updated_at->diffForHumans()); ?>
+                                                    <?php echo e('hace ' . $work->updated_at->diffForHumans(null, true)); ?>
 
                                                     </p>
                                                 <p class="text-slate-700 line-clamp-1 dark:text-navy-100">

@@ -625,20 +625,76 @@
                     </script>
                 @endpush
             @endif
+
             @if(auth()->user()->can('all.construction'))
                 <div class="mt-4 grid grid-cols-12 gap-4 px-[var(--margin-x)] transition-all duration-[.25s] sm:mt-5 sm:gap-5 lg:mt-6 lg:gap-6">
                     <div class="col-span-12 lg:col-span-9">
                         <h2 class="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">{{ __('Panel de Control - Construcción') }}</h2>
                     </div>
 
-                    <div class="col-span-12 lg:col-span-12">
+                    <div class="col-span-12 lg:col-span-9">
                         <figure class="highcharts-figure">
                             <div id="assignmentsConstruction"></div>
-                            <p class="highcharts-description">
-                                Gráfico de columnas básico donde muestra la cantidad de asignaciones que usted tuvo durante toda la gestión del {{ now()->year }}, tomando como métrica el progreso de su trabajo durante cada mes de acuerdo al rol que corresponde.
-                                Los meses que no tiene representación gráfica pueden significar que ese mes usted no recibió asignaciones o que aún falta llegar a dicho mes del año.
+                            <p class="highcharts-description mt-2.5">
+                                {{ __('Gráfico de columnas básico donde muestra la cantidad de asignaciones que usted tuvo durante toda la gestión '. now()->year.', tomando como métrica el progreso de su trabajo durante cada mes de acuerdo al rol que corresponde.
+                                Los meses que no tiene representación gráfica pueden significar que ese mes usted no recibió asignaciones o que aún falta llegar a dicho mes del año.') }}
                             </p>
                         </figure>
+                    </div>
+
+                    <div class="col-span-12 lg:col-span-3">
+                        {{-- <div class="flex flex-col gap-2"> --}}
+                        <div>
+                            <p class="font-semibold text-base text-center">{{ __('Últimas designaciones') }}</p>
+                            <div class="my-3 h-px bg-slate-200 dark:bg-navy-500"></div>
+                        </div>
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-1">
+                            @foreach ($lastThreeRecords as $lastRecord)
+                                <div class="card flex-row justify-between space-x-2 p-4 sm:p-5">
+                                    <div>
+                                        <div class="flex space-x-1">
+                                            <h4 class="text-base font-medium text-slate-700 line-clamp-1 dark:text-navy-100">{{ $lastRecord->name }}</h4>
+                                            @if ($lastRecord->status !== 0)
+                                                <a
+                                                    href="{{ route('construction.materials', [$lastRecord->construction->id]) }}"
+                                                    class="btn h-6 rounded-full px-2 text-xs font-medium text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:text-accent-light dark:hover:bg-accent-light/20 dark:focus:bg-accent-light/20 dark:active:bg-accent-light/25 lg:inline-flex"
+                                                >
+                                                    {{ __('Ver') }}
+                                                </a>
+                                            @endif
+                                        </div>
+                                        <span
+                                            class="text-xs+ transition-colors duration-300 ease-in-out hover:text-slate-800 dark:hover:text-navy-50"
+                                        >
+                                            {{ 'hace ' . $lastRecord->updated_at->diffForHumans(null, true) }}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        @if ($lastRecord->status === 0)
+                                            <i
+                                                class="fa-solid fa-ban text-error fa-2x"
+                                                x-tooltip.error.on.mouseenter="'{{ __('Obra dada de baja') }}'"></i>
+                                        @else
+                                            @if($lastRecord->completion_date)
+                                                <i
+                                                    class="fa-solid fa-circle-check text-success fa-2x"
+                                                    x-tooltip.success.on.mouseenter="'{{ __('Obra concluida') }}'"></i>
+                                            @else
+                                                <i
+                                                    class="fa-solid fa-person-digging text-warning fa-2x"
+                                                    x-tooltip.warning.on.mouseenter="'{{ __('Obra en Ejecución') }}'"></i>
+                                            @endif
+                                        @endif
+                                    </div>
+                                    {{-- <div class="avatar h-10 w-10">
+                                        <img class="mask is-squircle" src="images/avatar/avatar-10.jpg" alt="avatar" />
+                                        <div
+                                            class="absolute right-0 -m-0.5 h-3 w-3 rounded-full border-2 border-white bg-primary dark:border-navy-700 dark:bg-accent"
+                                        ></div>
+                                    </div> --}}
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
                 @push('scripts')
@@ -799,14 +855,69 @@
                         <h2 class="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">{{ __('Panel de Control - Estudios') }}</h2>
                     </div>
 
-                    <div class="col-span-12 lg:col-span-12">
+                    <div class="col-span-12 lg:col-span-9">
                         <figure class="highcharts-figure">
                             <div id="assignmentsStudy"></div>
-                            <p class="highcharts-description">
-                                Gráfico de columnas básico donde muestra la cantidad de asignaciones que usted tuvo durante toda la gestión del {{ now()->year }}, tomando como métrica el progreso de su trabajo durante cada mes de acuerdo al rol que corresponde.
-                                Los meses que no tiene representación gráfica pueden significar que ese mes usted no recibió asignaciones o que aún falta llegar a dicho mes del año.
+                            <p class="highcharts-description mt-2.5">
+                                {{ __('Gráfico de columnas básico donde muestra la cantidad de asignaciones que usted tuvo durante toda la gestión '. now()->year. ', tomando como métrica el progreso de su trabajo durante cada mes de acuerdo al rol que corresponde.
+                                Los meses que no tiene representación gráfica pueden significar que ese mes usted no recibió asignaciones o que aún falta llegar a dicho mes del año.') }}
                             </p>
                         </figure>
+                    </div>
+
+                    <div class="col-span-12 lg:col-span-3">
+                        {{-- <div class="flex flex-col gap-2"> --}}
+                        <div>
+                            <p class="font-semibold text-base text-center">{{ __('Últimas designaciones') }}</p>
+                            <div class="my-3 h-px bg-slate-200 dark:bg-navy-500"></div>
+                        </div>
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-1">
+                            @foreach ($lastThreeRecords as $lastRecord)
+                                <div class="card flex-row justify-between space-x-2 p-4 sm:p-5">
+                                    <div>
+                                        <div class="flex space-x-1">
+                                            <h4 class="text-base font-medium text-slate-700 line-clamp-1 dark:text-navy-100">{{ $lastRecord->name }}</h4>
+                                            @if ($lastRecord->status !== 0)
+                                                <a
+                                                    href="{{ route('study.assignments.show', [$lastRecord->study->id]) }}"
+                                                    class="btn h-6 rounded-full px-2 text-xs font-medium text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:text-accent-light dark:hover:bg-accent-light/20 dark:focus:bg-accent-light/20 dark:active:bg-accent-light/25 lg:inline-flex"
+                                                >
+                                                    {{ __('Ver') }}
+                                                </a>
+                                            @endif
+                                        </div>
+                                        <span
+                                            class="text-xs+ transition-colors duration-300 ease-in-out hover:text-slate-800 dark:hover:text-navy-50"
+                                        >
+                                            {{ 'hace ' . $lastRecord->updated_at->diffForHumans(null, true) }}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        @if ($lastRecord->status === 0)
+                                            <i
+                                                class="fa-solid fa-ban text-error fa-2x"
+                                                x-tooltip.error.on.mouseenter="'{{ __('Obra dada de baja') }}'"></i>
+                                        @else
+                                            @if($lastRecord->completion_date)
+                                                <i
+                                                    class="fa-solid fa-circle-check text-success fa-2x"
+                                                    x-tooltip.success.on.mouseenter="'{{ __('Obra concluida') }}'"></i>
+                                            @else
+                                                <i
+                                                    class="fa-solid fa-person-digging text-warning fa-2x"
+                                                    x-tooltip.warning.on.mouseenter="'{{ __('Obra en Ejecución') }}'"></i>
+                                            @endif
+                                        @endif
+                                    </div>
+                                    {{-- <div class="avatar h-10 w-10">
+                                        <img class="mask is-squircle" src="images/avatar/avatar-10.jpg" alt="avatar" />
+                                        <div
+                                            class="absolute right-0 -m-0.5 h-3 w-3 rounded-full border-2 border-white bg-primary dark:border-navy-700 dark:bg-accent"
+                                        ></div>
+                                    </div> --}}
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
                 @push('scripts')
@@ -967,14 +1078,69 @@
                         <h2 class="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">{{ __('Panel de Control - Supervisión') }}</h2>
                     </div>
 
-                    <div class="col-span-12 lg:col-span-12">
+                    <div class="col-span-12 lg:col-span-9">
                         <figure class="highcharts-figure">
                             <div id="assignmentsSupervision"></div>
-                            <p class="highcharts-description">
-                                Gráfico de columnas básico donde muestra la cantidad de asignaciones que usted tuvo durante toda la gestión del {{ now()->year }}, tomando como métrica el progreso de su trabajo durante cada mes de acuerdo al rol que corresponde.
-                                Los meses que no tiene representación gráfica pueden significar que ese mes usted no recibió asignaciones o que aún falta llegar a dicho mes del año.
+                            <p class="highcharts-description mt-2.5">
+                                {{ __('Gráfico de columnas básico donde muestra la cantidad de asignaciones que usted tuvo durante toda la gestión '. now()->year. ', tomando como métrica el progreso de su trabajo durante cada mes de acuerdo al rol que corresponde.
+                                Los meses que no tiene representación gráfica pueden significar que ese mes usted no recibió asignaciones o que aún falta llegar a dicho mes del año.') }}
                             </p>
                         </figure>
+                    </div>
+
+                    <div class="col-span-12 lg:col-span-3">
+                        {{-- <div class="flex flex-col gap-2"> --}}
+                        <div>
+                            <p class="font-semibold text-base text-center">{{ __('Últimas designaciones') }}</p>
+                            <div class="my-3 h-px bg-slate-200 dark:bg-navy-500"></div>
+                        </div>
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-1">
+                            @foreach ($lastThreeRecords as $lastRecord)
+                                <div class="card flex-row justify-between space-x-2 p-4 sm:p-5">
+                                    <div>
+                                        <div class="flex space-x-1">
+                                            <h4 class="text-base font-medium text-slate-700 line-clamp-1 dark:text-navy-100">{{ $lastRecord->name }}</h4>
+                                            @if ($lastRecord->status !== 0)
+                                                <a
+                                                    href="{{ route('supervision.assignments.show', [$lastRecord->supervision->id]) }}"
+                                                    class="btn h-6 rounded-full px-2 text-xs font-medium text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:text-accent-light dark:hover:bg-accent-light/20 dark:focus:bg-accent-light/20 dark:active:bg-accent-light/25 lg:inline-flex"
+                                                >
+                                                    {{ __('Ver') }}
+                                                </a>
+                                            @endif
+                                        </div>
+                                        <span
+                                            class="text-xs+ transition-colors duration-300 ease-in-out hover:text-slate-800 dark:hover:text-navy-50"
+                                        >
+                                            {{ 'hace ' . $lastRecord->updated_at->diffForHumans(null, true) }}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        @if ($lastRecord->status === 0)
+                                            <i
+                                                class="fa-solid fa-ban text-error fa-2x"
+                                                x-tooltip.error.on.mouseenter="'{{ __('Obra dada de baja') }}'"></i>
+                                        @else
+                                            @if($lastRecord->completion_date)
+                                                <i
+                                                    class="fa-solid fa-circle-check text-success fa-2x"
+                                                    x-tooltip.success.on.mouseenter="'{{ __('Obra concluida') }}'"></i>
+                                            @else
+                                                <i
+                                                    class="fa-solid fa-person-digging text-warning fa-2x"
+                                                    x-tooltip.warning.on.mouseenter="'{{ __('Obra en Ejecución') }}'"></i>
+                                            @endif
+                                        @endif
+                                    </div>
+                                    {{-- <div class="avatar h-10 w-10">
+                                        <img class="mask is-squircle" src="images/avatar/avatar-10.jpg" alt="avatar" />
+                                        <div
+                                            class="absolute right-0 -m-0.5 h-3 w-3 rounded-full border-2 border-white bg-primary dark:border-navy-700 dark:bg-accent"
+                                        ></div>
+                                    </div> --}}
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
                 @push('scripts')

@@ -5,6 +5,11 @@
         <div x-init="$notification({ text: 'Datos guardados exitosamente!', variant: 'success', position: 'right-top', duration: 2200 })"></div>
         </p>
     @endif
+    @if (session('status') === 'cannot-deleted')
+        <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 3500)">
+        <div x-init="$notification({ text: 'Este servicio ya pertenece a una obra, no se puede eliminar!', variant: 'warning', position: 'right-top', duration: 3500 })"></div>
+        </p>
+    @endif
     @if (session('status') === 'service-deleted')
         <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)">
         <div x-init="$notification({ text: 'Servicio eliminado exitosamente!', variant: 'success', position: 'right-top', duration: 2200 })"></div>
@@ -123,14 +128,14 @@
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Eliminar el rol
+                    // Eliminar el servicio
                     Livewire.emit('deleteService', ServiceId);
 
-                    Swal.fire(
+                    /* Swal.fire(
                         'Se eliminó el Servicio',
                         'Eliminado Correctamente',
                         'success'
-                    )
+                    ) */
                 }
             })
         });

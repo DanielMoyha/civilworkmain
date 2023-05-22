@@ -66,43 +66,102 @@
                 </thead>
                 <tbody>
                     @forelse ($allStudies as $studie)
-                        <tr class="border border-transparent border-b-slate-200 dark:border-b-navy-500" wire:loading.class='opacity-40'>
+                        <tr class="@if($studie->work->status === 0) bg-error/15 hover:!border-error hover:text-error @endif border border-transparent border-b-slate-200 dark:border-b-navy-500" wire:loading.class='opacity-40'>
                             <td class="text-center px-4 py-3 sm:px-5">{{ $loop->iteration }}</td>
-                            <td class=" px-4 py-3 sm:px-5">{{ $studie->name }}</td>
-                            <td class=" px-4 py-3 sm:px-5">{{ $studie->work->user->name }}</td>
-                            @if ($studie->types()->exists())
-                                <td class=" px-4 py-3 sm:px-5">
-                                    <div class="flex flex-wrap gap-2 py-1">
-                                        @forelse ($studie->types as $type)
-                                            <a class="tag rounded-full border border-info/30 bg-info/10 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25 text-tiny">
-                                                {{ $type->name }}
-                                            </a>
-                                        @empty
-                                            <p class="font-bold text-xs italic opacity-40">Aún no tiene materiales registrados...</p>
-                                        @endforelse
-                                    </div>
+
+                            @if ($studie->work->status === 0)
+                                <td class="italic px-4 py-3 sm:px-5 tracking-wide">
+                                    <span class="cursor-not-allowed">
+                                        {{ $studie->name }}
+                                    </span>
                                 </td>
                             @else
-                                <td class="text-center font-bold text-xs italic opacity-40 px-4 py-3 sm:px-5"> {{ __('Sin estudios extras') }}</td>
+                                @if ($studie->work->completion_date)
+                                    <td class=" px-4 py-3 sm:px-5">
+                                        <span class="badge rounded-full border border-success bg-success text-white" x-tooltip.success.on.mouseenter="'Obra concluida'">
+                                            <i class="fa-solid fa-circle-check text-sm+"></i>
+                                        </span>
+                                        <a href="{{ route('admin.works.show', [$studie->work->id]) }}">
+                                            {{ $studie->name }}
+                                        </a>
+                                    </td>
+                                @else
+                                    @if ($studie->work->user->is_active !== 1)
+                                        <td class="px-4 py-3 sm:px-5">
+                                            <span class="badge rounded-full border border-info bg-info text-white" x-tooltip.info.on.mouseenter="'Obra en Pausa'">
+                                                <i class="fa-solid fa-circle-pause text-sm+"></i>
+                                            </span>
+                                            <a href="{{ route('admin.works.show', [$studie->work->id]) }}">
+                                                {{ $studie->name }}
+                                            </a>
+                                        </td>
+                                    @else
+                                        <td class="px-4 py-3 sm:px-5">
+                                            <span class="badge rounded-full border border-warning bg-warning text-white cursor-help" x-tooltip.warning.on.mouseenter="'En ejecución'">
+                                                <i class="fa-solid fa-file-contract text-sm+"></i>
+                                            </span>
+                                            <a href="{{ route('admin.works.show', [$studie->work->id]) }}">
+                                                {{ $studie->name }}
+                                            </a>
+                                        </td>
+                                    @endif
+                                @endif
                             @endif
-                            @if ($studie->documents()->exists())
-                                <td class="text-center px-4 py-3 sm:px-5">
-                                    <div>
-                                        {{ $studie->documents->count() }}
-                                        <span class="text-xs">@choice('Documento|Documentos', $studie->documents->count())</span>
-                                    </div>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
-                                        @forelse ($studie->documents as $document)
-                                            <a class="tag rounded-full border border-secondary/30 bg-secondary/10 text-secondary hover:bg-secondary/20 focus:bg-secondary/20 active:bg-secondary/25" href="{{ asset('uploads') . '/' . $document->file }}" target="_blank">
-                                                <span class="line-clamp-1">{{ $document->name }}</span>
-                                            </a>
-                                        @empty
-                                            <td class="text-center font-bold text-xs italic opacity-40 px-4 py-3 sm:px-5"> {{ __('Sin documentos') }}</td>
-                                        @endforelse
-                                    </div>
+
+                            @if ($studie->work->user->is_active === 0)
+                                <td class=" px-4 py-3 sm:px-5">
+                                    <span class="badge rounded-full border border-error bg-error text-white cursor-help" x-tooltip.error.on.mouseenter="'Usuario deshabilitado'">
+                                        <i class="fa-solid fa-user-large-slash text-xs"></i>
+                                    </span>
+                                    {{ $studie->work->user->name }}
                                 </td>
                             @else
-                                <td class="text-center font-bold text-xs italic opacity-40 px-4 py-3 sm:px-5"> {{ __('Sin documentos') }}</td>
+                                <td class=" px-4 py-3 sm:px-5">{{ $studie->work->user->name }}</td>
+                            @endif
+
+                            @if ($studie->work->status === 0)
+                                <td class="dark:text-white decoration-double hover:text-error px-4 py-3 sm:px-5 text-base text-center tracking-wider underline uppercase" colspan="2">
+                                    <i class="fa-solid fa-circle-info text-info" x-tooltip.info.on.mouseenter="'Se dio de baja en fecha: {{ $studie->work->updated_at->format('d-m-Y') }}'"></i> {{ __('OBRA DADA DE BAJA') }}
+                                </td>
+                            @else
+                                @if ($studie->types()->exists())
+                                    <td class=" px-4 py-3 sm:px-5">
+                                        <div class="flex flex-wrap gap-2 py-1">
+                                            @forelse ($studie->types as $type)
+                                                <a class="tag rounded-full border border-info/30 bg-info/10 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25 text-tiny">
+                                                    {{ $type->name }}
+                                                </a>
+                                            @empty
+                                                <p class="font-bold text-xs italic opacity-40">
+                                                    {{ __('Aún no tiene materiales registrados...') }}
+                                                </p>
+                                            @endforelse
+                                        </div>
+                                    </td>
+                                @else
+                                    <td class="text-center font-bold text-xs italic opacity-40 px-4 py-3 sm:px-5">
+                                        {{ __('Sin estudios extras') }}
+                                    </td>
+                                @endif
+                                @if ($studie->documents()->exists())
+                                    <td class="text-center px-4 py-3 sm:px-5">
+                                        <div>
+                                            {{ $studie->documents->count() }}
+                                            <span class="text-xs">@choice('Documento|Documentos', $studie->documents->count())</span>
+                                        </div>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
+                                            @forelse ($studie->documents as $document)
+                                                <a class="tag rounded-full border border-secondary/30 bg-secondary/10 text-secondary hover:bg-secondary/20 focus:bg-secondary/20 active:bg-secondary/25" href="{{ asset('uploads') . '/' . $document->file }}" target="_blank">
+                                                    <span class="line-clamp-1">{{ $document->name }}</span>
+                                                </a>
+                                            @empty
+                                                <td class="text-center font-bold text-xs italic opacity-40 px-4 py-3 sm:px-5"> {{ __('Sin documentos') }}</td>
+                                            @endforelse
+                                        </div>
+                                    </td>
+                                @else
+                                    <td class="text-center font-bold text-xs italic opacity-40 px-4 py-3 sm:px-5"> {{ __('Sin documentos') }}</td>
+                                @endif
                             @endif
                         </tr>
                     @empty

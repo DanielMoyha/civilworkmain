@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Http\Requests\MaterialRequest;
 use App\Models\Material;
 use Livewire\WithPagination;
 use Livewire\Component;
@@ -17,6 +18,7 @@ class Materials extends Component
     public $remarks;
     public $material_id;
     public $updateMode = false;
+    public $request;
     protected $listeners = ['deleteMaterial'];
 
     /**
@@ -44,7 +46,7 @@ class Materials extends Component
     public function render()
     {
         $this->materials = Material::all();
-        $allMaterials = Material::search('name', $this->search)->paginate(10);
+        $allMaterials = Material::search(['name', 'quantity'] ,$this->search)->paginate(10);
         return view('livewire.materials', [
             'allMaterials' => $allMaterials
         ]);
@@ -69,15 +71,12 @@ class Materials extends Component
     */
     public function store() : void
     {
-        $validatedDate = $this->validate([
-            'name' => 'required',
-            'quantity' => 'required',
-            'remarks' => 'nullable',
-        ]);
+        $rules = (new MaterialRequest())->rules();
+        $messages = (new MaterialRequest())->messages();
+        $requestData = $this->validate($rules, $messages);
+        $validatedData = $requestData;
 
-        // dd($validatedDate);
-
-        Material::create($validatedDate);
+        Material::create($validatedData);
         session()->flash('status', 'material-created');
         $this->resetInputFields();
     }

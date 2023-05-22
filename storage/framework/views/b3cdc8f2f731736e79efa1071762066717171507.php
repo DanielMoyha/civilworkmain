@@ -134,9 +134,10 @@
                     <button
                         type="submit"
                         class="btn mt-5 h-10 w-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90"
-                        x-data="{loading:false}"
-                        x-on:click="loading=true; document.getElementById('form').submit();"
-                        x-html="loading ? `<div class='spinner is-elastic h-7 w-7 animate-spin rounded-full border-[3px] border-success border-r-transparent mr-3'></div> Ingresando...` : 'Ingresar'" class="disabled:opacity-50"
+                        x-data="{ loading: false }"
+                        x-bind:class="{ 'opacity-75': loading }"
+                        x-on:click="loading = true; document.getElementById('form').submit();"
+                        x-html="loading ? `<div class='spinner is-elastic h-7 w-7 animate-spin rounded-full border-[3px] border-success border-r-transparent mr-3'></div> Ingresando...` : 'Ingresar'"
                         x-bind:disabled="loading"
                     ><?php echo e(__('Ingresar')); ?></button>
                 </form>

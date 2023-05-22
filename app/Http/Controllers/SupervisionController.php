@@ -104,8 +104,10 @@ class SupervisionController extends Controller
     public function create_follow_up(Supervision $supervision)
     {
         $this->authorize('view', $supervision->work);
+        $lastFollowUp = Follow_up::where('supervision_id', $supervision->id)->latest('created_at')->first();
         return view('supervisory.follow-ups.create', [
-            'supervision' => $supervision
+            'supervision' => $supervision,
+            'lastFollowUp' => $lastFollowUp
         ]);
     }
 

@@ -20,11 +20,16 @@ class Services extends Component
      * Elimina un servicio
      *
      * @param  \App\Models\Service  $service  - El servicio a eliminar
-     * @return void
+     * @return
     */
-    public function deleteService(Service $service) : void
+    public function deleteService(Service $service)
     {
+        if ($service->works()->exists())
+        {
+            return session()->flash('status', 'cannot-deleted');
+        }
         $service->delete();
+        session()->flash('status', 'service-deleted');
     }
 
     /**

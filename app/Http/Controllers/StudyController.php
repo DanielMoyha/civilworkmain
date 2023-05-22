@@ -95,7 +95,7 @@ class StudyController extends Controller
     {
         // $documents = Document::where('study_id', $study->id);
         $this->authorize('view', $study->work);
-        $documents = Document::all();
+        $documents = Document::where('study_id', $study->id)->get();
         return view('studies.documents.create', [
             'study' => $study,
             'documents' => $documents

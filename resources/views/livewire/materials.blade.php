@@ -94,7 +94,7 @@
                             <td>{{ $material->name }}</td>
                             <td class="text-center"> {{ $material->quantity }}</td>
                             <td class="text-center">
-                                @if ($material->remarks === '')
+                                @if ($material->remarks === '' or $material->remarks === null)
                                     <span class="decoration-sky-500/30">---</span>
                                 @endif
                                 {{ $material->remarks }}
@@ -141,7 +141,7 @@
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Eliminar el rol
+                    // Eliminar el material
                     Livewire.emit('deleteMaterial', MaterialId);
 
                     /* Swal.fire(

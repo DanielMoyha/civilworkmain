@@ -554,20 +554,74 @@
                     </script>
                 <?php $__env->stopPush(); ?>
             <?php endif; ?>
+
             <?php if(auth()->user()->can('all.construction')): ?>
                 <div class="mt-4 grid grid-cols-12 gap-4 px-[var(--margin-x)] transition-all duration-[.25s] sm:mt-5 sm:gap-5 lg:mt-6 lg:gap-6">
                     <div class="col-span-12 lg:col-span-9">
                         <h2 class="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl"><?php echo e(__('Panel de Control - Construcción')); ?></h2>
                     </div>
 
-                    <div class="col-span-12 lg:col-span-12">
+                    <div class="col-span-12 lg:col-span-9">
                         <figure class="highcharts-figure">
                             <div id="assignmentsConstruction"></div>
-                            <p class="highcharts-description">
-                                Gráfico de columnas básico donde muestra la cantidad de asignaciones que usted tuvo durante toda la gestión del <?php echo e(now()->year); ?>, tomando como métrica el progreso de su trabajo durante cada mes de acuerdo al rol que corresponde.
-                                Los meses que no tiene representación gráfica pueden significar que ese mes usted no recibió asignaciones o que aún falta llegar a dicho mes del año.
+                            <p class="highcharts-description mt-2.5">
+                                <?php echo e(__('Gráfico de columnas básico donde muestra la cantidad de asignaciones que usted tuvo durante toda la gestión '. now()->year.', tomando como métrica el progreso de su trabajo durante cada mes de acuerdo al rol que corresponde.
+                                Los meses que no tiene representación gráfica pueden significar que ese mes usted no recibió asignaciones o que aún falta llegar a dicho mes del año.')); ?>
+
                             </p>
                         </figure>
+                    </div>
+
+                    <div class="col-span-12 lg:col-span-3">
+                        
+                        <div>
+                            <p class="font-semibold text-base text-center"><?php echo e(__('Últimas designaciones')); ?></p>
+                            <div class="my-3 h-px bg-slate-200 dark:bg-navy-500"></div>
+                        </div>
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-1">
+                            <?php $__currentLoopData = $lastThreeRecords; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $lastRecord): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <div class="card flex-row justify-between space-x-2 p-4 sm:p-5">
+                                    <div>
+                                        <div class="flex space-x-1">
+                                            <h4 class="text-base font-medium text-slate-700 line-clamp-1 dark:text-navy-100"><?php echo e($lastRecord->name); ?></h4>
+                                            <?php if($lastRecord->status !== 0): ?>
+                                                <a
+                                                    href="<?php echo e(route('construction.materials', [$lastRecord->construction->id])); ?>"
+                                                    class="btn h-6 rounded-full px-2 text-xs font-medium text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:text-accent-light dark:hover:bg-accent-light/20 dark:focus:bg-accent-light/20 dark:active:bg-accent-light/25 lg:inline-flex"
+                                                >
+                                                    <?php echo e(__('Ver')); ?>
+
+                                                </a>
+                                            <?php endif; ?>
+                                        </div>
+                                        <span
+                                            class="text-xs+ transition-colors duration-300 ease-in-out hover:text-slate-800 dark:hover:text-navy-50"
+                                        >
+                                            <?php echo e('hace ' . $lastRecord->updated_at->diffForHumans(null, true)); ?>
+
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <?php if($lastRecord->status === 0): ?>
+                                            <i
+                                                class="fa-solid fa-ban text-error fa-2x"
+                                                x-tooltip.error.on.mouseenter="'<?php echo e(__('Obra dada de baja')); ?>'"></i>
+                                        <?php else: ?>
+                                            <?php if($lastRecord->completion_date): ?>
+                                                <i
+                                                    class="fa-solid fa-circle-check text-success fa-2x"
+                                                    x-tooltip.success.on.mouseenter="'<?php echo e(__('Obra concluida')); ?>'"></i>
+                                            <?php else: ?>
+                                                <i
+                                                    class="fa-solid fa-person-digging text-warning fa-2x"
+                                                    x-tooltip.warning.on.mouseenter="'<?php echo e(__('Obra en Ejecución')); ?>'"></i>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                    
+                                </div>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </div>
                     </div>
                 </div>
                 <?php $__env->startPush('scripts'); ?>
@@ -728,14 +782,67 @@
                         <h2 class="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl"><?php echo e(__('Panel de Control - Estudios')); ?></h2>
                     </div>
 
-                    <div class="col-span-12 lg:col-span-12">
+                    <div class="col-span-12 lg:col-span-9">
                         <figure class="highcharts-figure">
                             <div id="assignmentsStudy"></div>
-                            <p class="highcharts-description">
-                                Gráfico de columnas básico donde muestra la cantidad de asignaciones que usted tuvo durante toda la gestión del <?php echo e(now()->year); ?>, tomando como métrica el progreso de su trabajo durante cada mes de acuerdo al rol que corresponde.
-                                Los meses que no tiene representación gráfica pueden significar que ese mes usted no recibió asignaciones o que aún falta llegar a dicho mes del año.
+                            <p class="highcharts-description mt-2.5">
+                                <?php echo e(__('Gráfico de columnas básico donde muestra la cantidad de asignaciones que usted tuvo durante toda la gestión '. now()->year. ', tomando como métrica el progreso de su trabajo durante cada mes de acuerdo al rol que corresponde.
+                                Los meses que no tiene representación gráfica pueden significar que ese mes usted no recibió asignaciones o que aún falta llegar a dicho mes del año.')); ?>
+
                             </p>
                         </figure>
+                    </div>
+
+                    <div class="col-span-12 lg:col-span-3">
+                        
+                        <div>
+                            <p class="font-semibold text-base text-center"><?php echo e(__('Últimas designaciones')); ?></p>
+                            <div class="my-3 h-px bg-slate-200 dark:bg-navy-500"></div>
+                        </div>
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-1">
+                            <?php $__currentLoopData = $lastThreeRecords; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $lastRecord): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <div class="card flex-row justify-between space-x-2 p-4 sm:p-5">
+                                    <div>
+                                        <div class="flex space-x-1">
+                                            <h4 class="text-base font-medium text-slate-700 line-clamp-1 dark:text-navy-100"><?php echo e($lastRecord->name); ?></h4>
+                                            <?php if($lastRecord->status !== 0): ?>
+                                                <a
+                                                    href="<?php echo e(route('study.assignments.show', [$lastRecord->study->id])); ?>"
+                                                    class="btn h-6 rounded-full px-2 text-xs font-medium text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:text-accent-light dark:hover:bg-accent-light/20 dark:focus:bg-accent-light/20 dark:active:bg-accent-light/25 lg:inline-flex"
+                                                >
+                                                    <?php echo e(__('Ver')); ?>
+
+                                                </a>
+                                            <?php endif; ?>
+                                        </div>
+                                        <span
+                                            class="text-xs+ transition-colors duration-300 ease-in-out hover:text-slate-800 dark:hover:text-navy-50"
+                                        >
+                                            <?php echo e('hace ' . $lastRecord->updated_at->diffForHumans(null, true)); ?>
+
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <?php if($lastRecord->status === 0): ?>
+                                            <i
+                                                class="fa-solid fa-ban text-error fa-2x"
+                                                x-tooltip.error.on.mouseenter="'<?php echo e(__('Obra dada de baja')); ?>'"></i>
+                                        <?php else: ?>
+                                            <?php if($lastRecord->completion_date): ?>
+                                                <i
+                                                    class="fa-solid fa-circle-check text-success fa-2x"
+                                                    x-tooltip.success.on.mouseenter="'<?php echo e(__('Obra concluida')); ?>'"></i>
+                                            <?php else: ?>
+                                                <i
+                                                    class="fa-solid fa-person-digging text-warning fa-2x"
+                                                    x-tooltip.warning.on.mouseenter="'<?php echo e(__('Obra en Ejecución')); ?>'"></i>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                    
+                                </div>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </div>
                     </div>
                 </div>
                 <?php $__env->startPush('scripts'); ?>
@@ -896,14 +1003,67 @@
                         <h2 class="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl"><?php echo e(__('Panel de Control - Supervisión')); ?></h2>
                     </div>
 
-                    <div class="col-span-12 lg:col-span-12">
+                    <div class="col-span-12 lg:col-span-9">
                         <figure class="highcharts-figure">
                             <div id="assignmentsSupervision"></div>
-                            <p class="highcharts-description">
-                                Gráfico de columnas básico donde muestra la cantidad de asignaciones que usted tuvo durante toda la gestión del <?php echo e(now()->year); ?>, tomando como métrica el progreso de su trabajo durante cada mes de acuerdo al rol que corresponde.
-                                Los meses que no tiene representación gráfica pueden significar que ese mes usted no recibió asignaciones o que aún falta llegar a dicho mes del año.
+                            <p class="highcharts-description mt-2.5">
+                                <?php echo e(__('Gráfico de columnas básico donde muestra la cantidad de asignaciones que usted tuvo durante toda la gestión '. now()->year. ', tomando como métrica el progreso de su trabajo durante cada mes de acuerdo al rol que corresponde.
+                                Los meses que no tiene representación gráfica pueden significar que ese mes usted no recibió asignaciones o que aún falta llegar a dicho mes del año.')); ?>
+
                             </p>
                         </figure>
+                    </div>
+
+                    <div class="col-span-12 lg:col-span-3">
+                        
+                        <div>
+                            <p class="font-semibold text-base text-center"><?php echo e(__('Últimas designaciones')); ?></p>
+                            <div class="my-3 h-px bg-slate-200 dark:bg-navy-500"></div>
+                        </div>
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-1">
+                            <?php $__currentLoopData = $lastThreeRecords; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $lastRecord): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <div class="card flex-row justify-between space-x-2 p-4 sm:p-5">
+                                    <div>
+                                        <div class="flex space-x-1">
+                                            <h4 class="text-base font-medium text-slate-700 line-clamp-1 dark:text-navy-100"><?php echo e($lastRecord->name); ?></h4>
+                                            <?php if($lastRecord->status !== 0): ?>
+                                                <a
+                                                    href="<?php echo e(route('supervision.assignments.show', [$lastRecord->supervision->id])); ?>"
+                                                    class="btn h-6 rounded-full px-2 text-xs font-medium text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:text-accent-light dark:hover:bg-accent-light/20 dark:focus:bg-accent-light/20 dark:active:bg-accent-light/25 lg:inline-flex"
+                                                >
+                                                    <?php echo e(__('Ver')); ?>
+
+                                                </a>
+                                            <?php endif; ?>
+                                        </div>
+                                        <span
+                                            class="text-xs+ transition-colors duration-300 ease-in-out hover:text-slate-800 dark:hover:text-navy-50"
+                                        >
+                                            <?php echo e('hace ' . $lastRecord->updated_at->diffForHumans(null, true)); ?>
+
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <?php if($lastRecord->status === 0): ?>
+                                            <i
+                                                class="fa-solid fa-ban text-error fa-2x"
+                                                x-tooltip.error.on.mouseenter="'<?php echo e(__('Obra dada de baja')); ?>'"></i>
+                                        <?php else: ?>
+                                            <?php if($lastRecord->completion_date): ?>
+                                                <i
+                                                    class="fa-solid fa-circle-check text-success fa-2x"
+                                                    x-tooltip.success.on.mouseenter="'<?php echo e(__('Obra concluida')); ?>'"></i>
+                                            <?php else: ?>
+                                                <i
+                                                    class="fa-solid fa-person-digging text-warning fa-2x"
+                                                    x-tooltip.warning.on.mouseenter="'<?php echo e(__('Obra en Ejecución')); ?>'"></i>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                    
+                                </div>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </div>
                     </div>
                 </div>
                 <?php $__env->startPush('scripts'); ?>

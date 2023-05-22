@@ -57,6 +57,11 @@ class DashboardController extends Controller
         $worksAssignmentsStudy = $this->constructionAssignments(2);
         $worksAssignmentsSupervision = $this->constructionAssignments(3);
 
+        $lastThreeRecords = Work::where('user_id', auth()->user()->id)
+                                    ->orderBy('updated_at', 'asc')
+                                    ->take(3)
+                                    ->get();
+
         /* $memoryAfter = memory_get_usage();
         $memoryUsage = $memoryAfter - $memoryBefore;
 
@@ -83,6 +88,7 @@ class DashboardController extends Controller
             'worksAssignmentsConstruction' => $worksAssignmentsConstruction,
             'worksAssignmentsStudy' => $worksAssignmentsStudy,
             'worksAssignmentsSupervision' => $worksAssignmentsSupervision,
+            'lastThreeRecords' => $lastThreeRecords
         ]);
     }
 
@@ -132,6 +138,17 @@ class DashboardController extends Controller
     {
         $months = Work::months();
         $works = Work::monthlyCount();
+
+        $worksInProgress = Work::whereNull('completion_date')->where('status', 1)
+            ->whereHas('user', function ($query) {
+                $query->where('is_active', 1);
+            })->count();
+        $worksInPause = Work::whereNull('completion_date')->where('status', 1)
+            ->whereHas('user', function ($query) {
+                $query->where('is_active', 0);
+            })->count();
+        $completedWorks = Work::whereNotNull('completion_date')->where('status', 1)->count();
+
         $dataWorks = array(0,0,0,0,0,0,0,0,0,0,0,0);
         foreach ($months as $key => $month) {
             $dataWorks[$month-1] = $works[$key];
@@ -207,7 +224,10 @@ class DashboardController extends Controller
             'consDep' => $consDep,
             'stuDep' => $stuDep,
             'supDep' => $supDep,
-            'deregistering_works' => $deregistering_works
+            'deregistering_works' => $deregistering_works,
+            'worksInProgress' => $worksInProgress,
+            'worksInPause' => $worksInPause,
+            'completedWorks' => $completedWorks
         /*'y2020' => $y2020,
             'y2021' => $y2021,
             'y2022' => $y2022, */

@@ -66,39 +66,95 @@
                 </thead>
                 <tbody>
                     @forelse ($allSupervisions as $supervision)
-                        <tr class="border border-transparent border-b-slate-200 dark:border-b-navy-500" wire:loading.class='opacity-40'>
+                        <tr class="@if($supervision->work->status === 0) bg-error/15 hover:!border-error hover:text-error @endif border border-transparent border-b-slate-200 dark:border-b-navy-500" wire:loading.class='opacity-40'>
                             <td class="text-center px-4 py-3 sm:px-5">{{ $loop->iteration }}</td>
-                            <td class=" px-4 py-3 sm:px-5">{{ $supervision->name }}</td>
-                            <td class=" px-4 py-3 sm:px-5">{{ $supervision->work->user->name }}</td>
-                            @if ($supervision->controls()->exists())
-                                <td class="text-center text-xs+ px-4 py-3 sm:px-5">
-                                    <div>
-                                        {{ __('Total Tareas: ') . $supervision->controls->count()}}
-                                        {{-- {{ $supervision->controls->completed_at->first() }} --}}
-                                    </div>
+
+                            @if ($supervision->work->status === 0)
+                                <td class="italic px-4 py-3 sm:px-5 tracking-wide">
+                                    <span class="cursor-not-allowed">
+                                        {{ $supervision->name }}
+                                    </span>
                                 </td>
                             @else
-                                <td class="text-center font-bold text-xs italic opacity-40 px-4 py-3 sm:px-5">
-                                    {{ __('Sin tareas aún') }}
+                                @if ($supervision->work->completion_date)
+                                    <td class=" px-4 py-3 sm:px-5">
+                                        <span class="badge rounded-full border border-success bg-success text-white" x-tooltip.success.on.mouseenter="'Obra concluida'">
+                                            <i class="fa-solid fa-circle-check text-sm+"></i>
+                                        </span>
+                                        <a href="{{ route('admin.works.show', [$supervision->work->id]) }}">
+                                            {{ $supervision->name }}
+                                        </a>
+                                    </td>
+                                @else
+                                    @if ($supervision->work->user->is_active !== 1)
+                                        <td class="px-4 py-3 sm:px-5">
+                                            <span class="badge rounded-full border border-info bg-info text-white" x-tooltip.info.on.mouseenter="'Obra en Pausa'">
+                                                <i class="fa-solid fa-circle-pause text-sm+"></i>
+                                            </span>
+                                            <a href="{{ route('admin.works.show', [$supervision->work->id]) }}">
+                                                {{ $supervision->name }}
+                                            </a>
+                                        </td>
+                                    @else
+                                        <td class="px-4 py-3 sm:px-5">
+                                            <span class="badge rounded-full border border-warning bg-warning text-white cursor-help" x-tooltip.warning.on.mouseenter="'En ejecución'">
+                                                <i class="fa-solid fa-swatchbook text-sm+"></i>
+                                            </span>
+                                            <a href="{{ route('admin.works.show', [$supervision->work->id]) }}">
+                                                {{ $supervision->name }}
+                                            </a>
+                                        </td>
+                                    @endif
+                                @endif
+                            @endif
+
+                            @if ($supervision->work->user->is_active === 0)
+                                <td class=" px-4 py-3 sm:px-5">
+                                    <span class="badge rounded-full border border-error bg-error text-white cursor-help" x-tooltip.error.on.mouseenter="'Usuario deshabilitado'">
+                                        <i class="fa-solid fa-user-large-slash text-xs"></i>
+                                    </span>
+                                    {{ $supervision->work->user->name }}
+                                </td>
+                            @else
+                                <td class=" px-4 py-3 sm:px-5">{{ $supervision->work->user->name }}</td>
+                            @endif
+
+                            @if ($supervision->work->status === 0)
+                                <td class="dark:text-white decoration-double hover:text-error px-4 py-3 sm:px-5 text-base text-center tracking-wider underline uppercase" colspan="2">
+                                    <i class="fa-solid fa-circle-info text-info" x-tooltip.info.on.mouseenter="'Se dio de baja en fecha: {{ $supervision->work->updated_at->format('d-m-Y') }}'"></i> {{ __('OBRA DADA DE BAJA') }}
+                                </td>
+                            @else
+                                @if ($supervision->controls()->exists())
+                                    {{-- <td class="text-center text-xs+ px-4 py-3 sm:px-5">
+                                        <div>{{ __('Total Tareas: ') . $supervision->controls->count()}}</div>
+                                    </td> --}}
+                                    <td class="text-left text-xs px-4 py-3 sm:px-5">
+                                        <div class="font-bold text-sm">{{ __('Tareas: ') . $supervision->controls->count()}}</div>
+                                        <div>{{ __('Realizadas: ') . $supervision->controls()->whereNotNull('completed_at')->count()}}</div>
+                                        <div>{{ __('Pendientes: ') . $supervision->controls()->whereNull('completed_at')->count()}}</div>
+                                    </td>
+                                @else
+                                    <td class="text-center font-bold text-xs italic opacity-40 px-4 py-3 sm:px-5">
+                                        {{ __('Sin tareas aún') }}
+                                    </td>
+                                @endif
+
+                                <td class="text-center px-4 py-3 sm:px-5">
+                                    <div class="flex flex-wrap gap-2 py-1">
+                                        @forelse ($supervision->follow_ups as $follow_up)
+                                        <a href="{{ Storage::url('followUp/'.$follow_up->image) }}" target="_blank">
+                                            <img
+                                                class="aspect-square rounded-lg object-cover object-center h-20"
+                                                src="{{ Storage::url('followUp/'.$follow_up->image) }}"
+                                                alt="a" target="_blank"
+                                            />
+                                        </a>
+                                        @empty
+                                            <p class="font-bold text-xs italic opacity-40">{{ __('Sin seguimiento realizado...') }}</p>
+                                        @endforelse
+                                    </div>
                                 </td>
                             @endif
-                            <td class="text-center px-4 py-3 sm:px-5">
-                                <div class="flex flex-wrap gap-2 py-1">
-                                    @forelse ($supervision->follow_ups as $follow_up)
-                                    <a href="{{ Storage::url('followUp/'.$follow_up->image) }}" target="_blank">
-
-                                        <img
-                                        class="aspect-square rounded-lg object-cover object-center h-20"
-                                        src="{{ Storage::url('followUp/'.$follow_up->image) }}"
-                                        {{-- src="https://images.unsplash.com/photo-1566766804468-f07b344cd2d7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE0fHx8ZW58MHx8fHw%3D&w=1000&q=80" --}}
-                                        alt="a" target="_blank"
-                                        />
-                                    </a>
-                                    @empty
-                                        <p class="font-bold text-xs italic opacity-40">{{ __('Sin seguimiento realizado...') }}</p>
-                                    @endforelse
-                                </div>
-                            </td>
                         </tr>
                     @empty
                         <tr>

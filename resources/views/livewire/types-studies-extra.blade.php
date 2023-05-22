@@ -85,7 +85,7 @@
                 </thead>
                 <tbody>
                     @forelse ($allTypes as $type)
-                        <tr class="border border-transparent border-b-slate-200 dark:border-b-navy-500" wire:loading.class='opacity-40'>
+                        <tr class="border border-transparent border-b-slate-200 dark:border-b-navy-500" wire:loading.class='opacity-40 cursor-no-drop'>
                             <td class="text-center">{{ $loop->iteration }}</td>
                             <td>{{ $type->name }}</td>
                             <td class="text-center"> {{ $type->description }}</td>
@@ -100,8 +100,12 @@
                         <tr>
                             <td colspan="5">
                                 <div class="flex justify-center items-center space-x-2">
-                                    <span class="h-8 w-8 text-cool-gray-400 text-3xl"><i class="fa-solid fa-inbox"></i></span>
-                                    <span class="font-medium py-8 text-cool-gray-400 text-xl">{{ __('Tipos de Estudios no encontrados...') }}</span>
+                                    <span class="h-8 w-8 text-cool-gray-400 text-3xl">
+                                        <i class="fa-solid fa-inbox"></i>
+                                    </span>
+                                    <span class="font-medium py-8 text-cool-gray-400 text-xl">
+                                        {{ __('Tipos de Estudios no encontrados...') }}
+                                    </span>
                                 </div>
                             </td>
                         </tr>
@@ -123,7 +127,7 @@
         Livewire.on('showAlert', typeStudyId => {
             Swal.fire({
                 title: '¿Eliminar Estudio Extra?',
-                text: "El material se eliminará de forma permanente.",
+                text: "El registro se eliminará de forma permanente.",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -132,7 +136,7 @@
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Eliminar el rol
+                    // Eliminar el estudio extra
                     Livewire.emit('deleteTypeStudy', typeStudyId);
 
                     /* Swal.fire(

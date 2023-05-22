@@ -4,19 +4,24 @@
         <p class="font-bold uppercase my-3 text-center text-lg">Formulario de Registro</p>
         <form>
             @csrf
-            <label class="block">
-                <span>Nombre del servicio</span>
-                <input
-                    class="form-input mt-1.5 w-full rounded-lg bg-slate-150 px-3 py-2 ring-primary/50 placeholder:text-slate-400 hover:bg-slate-200 focus:ring dark:bg-navy-900/90 dark:ring-accent/50 dark:placeholder:text-navy-300 dark:hover:bg-navy-900 dark:focus:bg-navy-900"
-                    placeholder="Escriba el nombre del servicio, por favor" type="text" name="name"
+            <x-form.input>
+                <x-slot:label>{{ __('Nombre del servicio') }}<x-asterisk></x-asterisk></x-slot:label>
+                <x-slot:input
+                    type="text"
                     id="name"
-                    wire:model="name" />
+                    name="name"
+                    wire:model='name'
+                    value="{{ old('name') }}"
+                    placeholder="Escriba el nombre del servicio, por favor"
+                ></x-slot:input>
+                <x-slot:error>
                     <x-input-error :messages="$errors->get('name')" class="mt-2" />
-            </label>
+                </x-slot:error>
+            </x-form.input>
             <div class="flex justify-end space-x-2 pt-4">
                 <button wire:click.prevent="store()"
                     class="btn min-w-[7rem] bg-success font-medium text-white hover:bg-success-focus focus:bg-success-focus active:bg-success-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
-                    Guardar
+                    {{ __('Guardar') }}
                 </button>
             </div>
         </form>

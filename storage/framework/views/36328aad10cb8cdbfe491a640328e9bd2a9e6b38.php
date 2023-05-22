@@ -51,15 +51,15 @@
         <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('types-studies-extra', [])->html();
-} elseif ($_instance->childHasBeenRendered('PTYX8qS')) {
-    $componentId = $_instance->getRenderedChildComponentId('PTYX8qS');
-    $componentTag = $_instance->getRenderedChildComponentTagName('PTYX8qS');
+} elseif ($_instance->childHasBeenRendered('Ql3ed2L')) {
+    $componentId = $_instance->getRenderedChildComponentId('Ql3ed2L');
+    $componentTag = $_instance->getRenderedChildComponentTagName('Ql3ed2L');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('PTYX8qS');
+    $_instance->preserveRenderedChild('Ql3ed2L');
 } else {
     $response = \Livewire\Livewire::mount('types-studies-extra', []);
     $html = $response->html();
-    $_instance->logRenderedChild('PTYX8qS', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('Ql3ed2L', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>

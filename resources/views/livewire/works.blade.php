@@ -147,9 +147,9 @@
                                 @if ($work->user->is_active === 1)
                                     {{ $work->user->name }}
                                 @else
-                                <span>
-                                    {{ $work->user->name }} <i class="fa-solid fa-user-large-slash text-base text-error"></i>
-                                </span>
+                                    <span>
+                                        <i class="fa-solid fa-user-large-slash text-base text-error"></i> {{ $work->user->name }}
+                                    </span>
                                 @endif
                             </td>
                             <td class="whitespace-nowrap px-4 py-3 sm:px-5">
@@ -162,7 +162,15 @@
                                 @if ($work->completion_date)
                                     {{ $work->completion_date->format('d-m-Y') }}
                                 @else
-                                <div class="badge rounded-full border border-success text-success">{{ __('En ejecución') }}</div>
+                                    @if ($work->user->is_active !== 1)
+                                        <div class="badge rounded-full border border-info bg-info text-white">
+                                            {{ __('Obra Pausada') }}
+                                        </div>
+                                    @else
+                                    <div class="badge rounded-full border border-success bg-success text-white">
+                                        {{ __('En ejecución') }}
+                                    </div>
+                                    @endif
                                 @endif
                             </td>
                             

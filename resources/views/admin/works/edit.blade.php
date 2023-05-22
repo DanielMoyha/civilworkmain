@@ -91,7 +91,7 @@
                                                 </x-slot:error>
                                             </x-form.select>
                                             <x-form.select>
-                                                <x-slot:label>{{ __('Seleccione el tipo de trabajo') }}<x-asterisk></x-asterisk></x-slot:label>
+                                                <x-slot:label>{{ __('Seleccione un Encargado') }}<x-asterisk></x-asterisk></x-slot:label>
                                                 <select
                                                     class="mt-1.5 w-full "
                                                     {{-- x-init="$el._x_tom = new Tom($el,pages.tomSelect)" --}}

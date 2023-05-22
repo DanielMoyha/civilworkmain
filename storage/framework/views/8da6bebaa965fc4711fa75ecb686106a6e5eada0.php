@@ -125,9 +125,10 @@
                                     <?php echo e($work->user->name); ?>
 
                                 <?php else: ?>
-                                <span>
-                                    <?php echo e($work->user->name); ?> <i class="fa-solid fa-user-large-slash text-base text-error"></i>
-                                </span>
+                                    <span>
+                                        <i class="fa-solid fa-user-large-slash text-base text-error"></i> <?php echo e($work->user->name); ?>
+
+                                    </span>
                                 <?php endif; ?>
                             </td>
                             <td class="whitespace-nowrap px-4 py-3 sm:px-5">
@@ -142,7 +143,17 @@
                                     <?php echo e($work->completion_date->format('d-m-Y')); ?>
 
                                 <?php else: ?>
-                                <div class="badge rounded-full border border-success text-success"><?php echo e(__('En ejecución')); ?></div>
+                                    <?php if($work->user->is_active !== 1): ?>
+                                        <div class="badge rounded-full border border-info bg-info text-white">
+                                            <?php echo e(__('Obra Pausada')); ?>
+
+                                        </div>
+                                    <?php else: ?>
+                                    <div class="badge rounded-full border border-success bg-success text-white">
+                                        <?php echo e(__('En ejecución')); ?>
+
+                                    </div>
+                                    <?php endif; ?>
                                 <?php endif; ?>
                             </td>
                             

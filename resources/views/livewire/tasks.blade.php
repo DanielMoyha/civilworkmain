@@ -53,11 +53,11 @@
                 </div>
             </div>
         @empty
-        <div class="content-center grid h-full justify-center">
-            <h2 class="text-sm+ font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 mt-2">
-                <i class="fa-solid fa-inbox"></i> {{ __('Aún no tiene tareas registradas') }}
-            </h2>
-        </div>
+            <div class="content-center grid h-full justify-center">
+                <h2 class="text-sm+ font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 mt-2">
+                    <i class="fa-solid fa-inbox"></i> {{ __('Aún no tiene tareas registradas') }}
+                </h2>
+            </div>
         @endforelse
     </div>
 </div>

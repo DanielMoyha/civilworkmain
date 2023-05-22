@@ -24,7 +24,8 @@ class Works extends Component
     {
         $value = 0;
         $work->update([
-            'status' => $work->status = $value
+            'status' => $work->status = $value,
+            'updated_at' => now()
         ]);
     }
 
@@ -38,7 +39,8 @@ class Works extends Component
     {
         $value = 1;
         $work->update([
-            'status' => $work->status = $value
+            'status' => $work->status = $value,
+            'updated_at' => now()
         ]);
     }
 
@@ -50,7 +52,7 @@ class Works extends Component
     public function render()
     {
         $this->table_works = Work::all();
-        $works = Work::search(['name', 'name_contractor', 'user.name', 'city.name'], $this->search)->paginate(10);
+        $works = Work::search(['name', 'name_contractor', 'user.name', 'city.name', 'status'], $this->search)->paginate(10);
         return view('livewire.works', [
             'works' => $works
         ]);

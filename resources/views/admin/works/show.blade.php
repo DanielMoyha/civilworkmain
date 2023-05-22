@@ -69,7 +69,15 @@
                                     @if ($work->completion_date)
                                         {{ $work->completion_date->format('d-m-Y') }}
                                     @else
-                                        <span class="badge rounded-full border border-success text-success">{{ __('En ejecución') }}</span>
+                                        @if ($work->user->is_active !== 1)
+                                            <span class="badge rounded-full border border-info bg-info text-white">
+                                                {{ __('Obra Pausada') }}
+                                            </span>
+                                        @else
+                                            <span class="badge rounded-full border border-success bg-success text-white">
+                                                {{ __('En ejecución') }}
+                                            </span>
+                                        @endif
                                     @endif
                                 </p>
                             </div>
@@ -92,7 +100,7 @@
                     <div class="my-7 h-px bg-slate-200 dark:bg-navy-500  noPrint"></div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-1">
                         <div>
-                            <p class="font-bold text-lg">Lista de Servicios:</p>
+                            <p class="font-bold text-lg">{{ __('Lista de Servicios:') }}</p>
                             @forelse ($work->services as $service)
                                 <div class="space-x-2.5 line-clamp-1 text-slate-600 dark:text-navy-100">
                                     <i class="fas fa-check fa-sm"></i>
@@ -112,7 +120,9 @@
                                     <span>{{ $associate_consultant->name }}</span>
                                 </div>
                             @empty
-                                <p class="font-bold text-sm+ italic opacity-40 flex justify-center items-center">Este trabajo no cuenta con consultores asociados...</p>
+                                <p class="font-bold text-sm+ italic opacity-40 flex justify-center items-center">
+                                    {{ __('Esta obra no cuenta con consultores asociados...') }}
+                                </p>
                             @endforelse
                         </div>
                     </div>

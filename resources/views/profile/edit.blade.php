@@ -111,8 +111,8 @@
                                                 id="name"
                                                 name="name"
                                                 value="{{ old('name', $user->name) }}"
-                                                class="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                placeholder="Enter name"
+                                                class="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent cursor-not-allowed"
+                                                placeholder="Nombre completo"
                                                 type="text"
                                                 readonly
                                             />
@@ -130,8 +130,8 @@
                                             <input
                                                 id="username"
                                                 name="username"
-                                                class="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                placeholder="Enter full name"
+                                                class="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent cursor-not-allowed"
+                                                placeholder="Nombre de usuario"
                                                 type="text"
                                                 value="{{ old('username', $user->username) }}"
                                                 readonly
@@ -151,8 +151,8 @@
                                                 id="email"
                                                 name="email"
                                                 value="{{ old('email', $user->email) }}"
-                                                class="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                placeholder="Enter email address"
+                                                class="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent cursor-not-allowed"
+                                                placeholder="Correo Electrónico"
                                                 type="text"
                                                 readonly
                                             />
@@ -171,7 +171,7 @@
                                                 id="city_id"
                                                 name="city_id"
                                                 value="{{ old('city_id', $user->city->state->name .'/'. $user->city->name ) }}"
-                                                class="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                                class="form-input peer w-full rounded-full border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent cursor-not-allowed"
                                                 type="text"
                                                 readonly
                                             />
@@ -252,7 +252,7 @@
                         <div class="card p-4 sm:p-5">
                             <div class="flex items-center space-x-4">
                                 <div class="avatar h-14 w-14">
-                                    <img class="rounded-full" src="https://uybor.uz/borless/uybor/img/user-images/user_no_photo_300x300.png" alt="avatar" />
+                                    <img class="rounded-full" src="{{ asset('assets/images/icons/avatar-user.jpg') }}" alt="avatar" />
                                 </div>
                                 <div>
                                     @php

@@ -13,11 +13,16 @@ class Roles extends Component
      * Elimina un rol del sistema
      *
      * @param  Role  $role  - El rol a eliminar
-     * @return void
+     * @return
     */
-    public function deleteRole(Role $role) : void
+    public function deleteRole(Role $role)
     {
+        // $role->delete();
+        if ($role->users()->count() > 0) {
+            return session()->flash('status', 'cannot-deleted');
+        }
         $role->delete();
+        session()->flash('status', 'role-deleted');
     }
 
     /**

@@ -27,7 +27,8 @@ class ConstructionController extends Controller
     */
     public function c_assignments()
     {
-        $works = Work::where('user_id', auth()->user()->id)->orderByDesc('updated_at')->get();
+        $works = Work::where('user_id', auth()->user()->id)->orderBy('updated_at', 'asc')->get();
+        // $works = Work::where('user_id', auth()->user()->id)->orderByDesc('updated_at')->get();
         return view('builders.allowances.index', [
             'works' => $works
         ]);

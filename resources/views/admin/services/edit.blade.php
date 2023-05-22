@@ -5,17 +5,23 @@
         <form>
             @csrf
             <input type="hidden" wire:model="service_id">
-            <label class="block">
-                <span>Nombre del servicio</span>
-                <input
-                    class="form-input mt-1.5 w-full rounded-lg bg-slate-150 px-3 py-2 ring-primary/50 placeholder:text-slate-400 hover:bg-slate-200 focus:ring dark:bg-navy-900/90 dark:ring-accent/50 dark:placeholder:text-navy-300 dark:hover:bg-navy-900 dark:focus:bg-navy-900"
-                    placeholder="Escriba el nombre del servicio, por favor" type="text" name="name"
-                    id="name" wire:model="name" />
+            <x-form.input>
+                <x-slot:label>{{ __('Nombre del servicio') }}<x-asterisk></x-asterisk></x-slot:label>
+                <x-slot:input
+                    type="text"
+                    id="name"
+                    name="name"
+                    wire:model='name'
+                    value="{{ old('name') }}"
+                    placeholder="Escriba el nombre del servicio, por favor"
+                ></x-slot:input>
+                <x-slot:error>
                     <x-input-error :messages="$errors->get('name')" class="mt-2" />
-            </label>
+                </x-slot:error>
+            </x-form.input>
             <div class="flex justify-end space-x-2 pt-4">
-                <button wire:click.prevent="update()" class="btn min-w-[7rem] bg-success font-medium text-white hover:bg-success-focus focus:bg-success-focus active:bg-success-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">Actualizar</button>
-                <button wire:click.prevent="cancel()" class="btn bg-error font-medium text-white hover:bg-error-focus focus:bg-error-focus active:bg-error-focus/90">Cancelar</button>
+                <button wire:click.prevent="update()" class="btn min-w-[7rem] bg-success font-medium text-white hover:bg-success-focus focus:bg-success-focus active:bg-success-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">{{ __('Actualizar') }}</button>
+                <button wire:click.prevent="cancel()" class="btn bg-error font-medium text-white hover:bg-error-focus focus:bg-error-focus active:bg-error-focus/90">{{ __('Cancelar') }}</button>
             </div>
         </form>
     </div>

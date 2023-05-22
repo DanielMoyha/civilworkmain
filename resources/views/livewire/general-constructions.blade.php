@@ -62,34 +62,84 @@
                 </thead>
                 <tbody>
                     @forelse ($allconstructions as $construction)
-                        <tr class="border border-transparent border-b-slate-200 dark:border-b-navy-500" wire:loading.class='opacity-40'>
+                        <tr class="@if($construction->work->status === 0) bg-error/15 hover:!border-error hover:text-error @endif border border-transparent border-b-slate-200 dark:border-b-navy-500" wire:loading.class='opacity-40'>
                             <td class="text-center px-4 py-3 sm:px-5">{{ $loop->iteration }}</td>
-                            <td class=" px-4 py-3 sm:px-5">
-                                <a href="{{ route('admin.works.show', [$construction->work->id]) }}">{{ $construction->name }}</a>
-                            </td>
-                            @if ($construction->materials()->exists())
-                                <td class="text-center text-xs+ px-4 py-3 sm:px-5"> {{ $construction->materials->count() . __(' Tipos de matariales utilizados hasta la fecha') }}</td>
+                            @if ($construction->work->status === 0)
+                                <td class="italic px-4 py-3 sm:px-5 tracking-wide">
+                                    <span class="cursor-not-allowed">
+                                        {{ $construction->name }}
+                                    </span>
+                                </td>
                             @else
-                                <td class="text-center font-bold text-xs italic opacity-40 px-4 py-3 sm:px-5"> {{ $construction->materials->count() . __(' materiales') }}</td>
-                            @endif
-                            <td class="text-center px-4 py-3 sm:px-5">
-                                <div class="flex flex-wrap gap-2 py-1">
-                                    @forelse ($construction->materials as $material)
-                                        <a class="tag rounded-full border border-info/30 bg-info/10 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25 text-tiny">
-                                            {{ $material->name }}
+                                @if ($construction->work->completion_date)
+                                    <td class=" px-4 py-3 sm:px-5">
+                                        <span class="badge rounded-full border border-success bg-success text-white" x-tooltip.success.on.mouseenter="'Obra concluida'">
+                                            <i class="fa-solid fa-circle-check text-sm+"></i>
+                                        </span>
+                                        <a href="{{ route('admin.works.show', [$construction->work->id]) }}">
+                                            {{ $construction->name }}
                                         </a>
-                                    @empty
-                                        <p class="font-bold text-xs italic opacity-40">{{ __('Aún no tiene materiales registrados...') }}</p>
-                                    @endforelse
-                                </div>
-                            </td>
+                                    </td>
+                                @else
+                                    @if ($construction->work->user->is_active !== 1)
+                                        <td class="px-4 py-3 sm:px-5">
+                                            <span class="badge rounded-full border border-info bg-info text-white" x-tooltip.info.on.mouseenter="'Obra en Pausa'">
+                                                <i class="fa-solid fa-circle-pause text-sm+"></i>
+                                            </span>
+                                            <a href="{{ route('admin.works.show', [$construction->work->id]) }}">
+                                                {{ $construction->name }}
+                                            </a>
+                                        </td>
+                                    @else
+                                        <td class="px-4 py-3 sm:px-5">
+                                            <span class="badge rounded-full border border-warning bg-warning text-white cursor-help" x-tooltip.warning.on.mouseenter="'En ejecución'">
+                                                <i class="fa-solid fa-person-digging text-sm+"></i>
+                                            </span>
+                                            <a href="{{ route('admin.works.show', [$construction->work->id]) }}">
+                                                {{ $construction->name }}
+                                            </a>
+                                        </td>
+                                    @endif
+                                @endif
+                            @endif
+
+                            @if ($construction->work->status === 0)
+                                <td class="dark:text-white decoration-double hover:text-error px-4 py-3 sm:px-5 text-base text-center tracking-wider underline uppercase" colspan="2">
+                                    <i class="fa-solid fa-circle-info text-info" x-tooltip.info.on.mouseenter="'Se dio de baja en fecha: {{ $construction->work->updated_at->format('d-m-Y') }}'"></i> {{ __('OBRA DADA DE BAJA') }}
+                                </td>
+                            @else
+                                @if ($construction->materials()->exists())
+                                    <td class="text-center text-xs+ px-4 py-3 sm:px-5">
+                                        {{ $construction->materials->count() . __(' Tipos de materiales utilizados hasta la fecha') }}
+                                    </td>
+                                @else
+                                    <td class="text-center font-bold text-xs italic opacity-40 px-4 py-3 sm:px-5">
+                                        {{ $construction->materials->count() . __(' materiales') }}
+                                    </td>
+                                @endif
+                                <td class="text-center px-4 py-3 sm:px-5">
+                                    <div class="flex flex-wrap gap-2 py-1">
+                                        @forelse ($construction->materials as $material)
+                                            <a class="tag rounded-full border border-info/30 bg-info/10 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25 text-tiny">
+                                                {{ $material->name }}
+                                            </a>
+                                        @empty
+                                            <p class="font-bold text-xs italic opacity-40">
+                                                {{ __('Aún no tiene materiales registrados...') }}
+                                            </p>
+                                        @endforelse
+                                    </div>
+                                </td>
+                            @endif
                         </tr>
                     @empty
                         <tr>
                             <td colspan="4" class=" px-4 py-3 sm:px-5">
                                 <div class="flex justify-center items-center space-x-2">
                                     <span class="h-8 w-8 text-cool-gray-400 text-3xl"><i class="fa-solid fa-inbox"></i></span>
-                                    <span class="font-medium py-8 text-cool-gray-400 text-xl">{{ __('Construcciones no encontradas...') }}</span>
+                                    <span class="font-medium py-8 text-cool-gray-400 text-xl">
+                                        {{ __('Construcciones no encontradas...') }}
+                                    </span>
                                 </div>
                             </td>
                         </tr>

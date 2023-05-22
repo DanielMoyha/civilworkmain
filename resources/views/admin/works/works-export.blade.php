@@ -41,7 +41,11 @@
                     @if ($work->completion_date)
                         {{ $work->completion_date->format('d-m-Y') }}
                     @else
-                        En ejecución
+                        @if ($work->user->is_active !== 1)
+                            Obra Pausada
+                        @else
+                            En ejecución
+                        @endif
                     @endif
                 </td>
                 <td>{{ $work->description }}</td>

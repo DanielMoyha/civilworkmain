@@ -9,7 +9,9 @@
     @section('content')
         <main class="main-content w-full px-[var(--margin-x)] pb-8">
             <div class="flex items-center space-x-4 py-5 lg:py-6">
-                <h2 class="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">{{ __('Asigne un rol al Usuario') }}</h2>
+                <h2 class="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">
+                    {{ __('Asigne un rol al Usuario') }}
+                </h2>
             </div>
 
             @if (session('status') === 'user-registered')
@@ -27,9 +29,7 @@
                 <div class="card">
                     <div class="flex grow flex-col items-center px-4 pb-5 sm:px-5 mt-10">
                         <div class="avatar h-20 w-20">
-                            <img class="rounded-full"
-                                src="https://uybor.uz/borless/uybor/img/user-images/user_no_photo_300x300.png"
-                                alt="avatar" />
+                            <img class="rounded-full" src="{{ asset('assets/images/icons/avatar-user.jpg') }}" alt="avatar" />
                         </div>
                         <h3 class="pt-3 text-lg font-medium text-slate-700 dark:text-navy-100">{{ $user->name }}</h3>
                         <p class="text-xs+">{{ $user->email }}</p>

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('quantity'); // o unidades
-            $table->string('remarks'); //observaciones
+            $table->string('remarks')->nullable(); //observaciones
             $table->timestamps();
         });
     }

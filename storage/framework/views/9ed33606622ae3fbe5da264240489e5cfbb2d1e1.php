@@ -100,7 +100,7 @@
                             <td><?php echo e($material->name); ?></td>
                             <td class="text-center"> <?php echo e($material->quantity); ?></td>
                             <td class="text-center">
-                                <?php if($material->remarks === ''): ?>
+                                <?php if($material->remarks === '' or $material->remarks === null): ?>
                                     <span class="decoration-sky-500/30">---</span>
                                 <?php endif; ?>
                                 <?php echo e($material->remarks); ?>
@@ -149,7 +149,7 @@
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Eliminar el rol
+                    // Eliminar el material
                     Livewire.emit('deleteMaterial', MaterialId);
 
                     /* Swal.fire(

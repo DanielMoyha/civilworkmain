@@ -28,7 +28,7 @@ class WorkRequest extends FormRequest
             'user_id' => 'required|min:1',
             'city_id' => 'required',
             'type_work_id' => 'required',
-            'name_contractor' => 'required|string|max:50|no_html',
+            'name_contractor' => 'required|string|max:80|no_html',
             'address_contractor' => 'required|string|max:70|no_html',
             'work_duration' => 'required|numeric|max:255|no_html',
             'start_date' => 'required',

@@ -68,6 +68,14 @@
                         <p><i class="fa-solid fa-calendar-check"></i> <?php echo e($construction->work->start_date->format('d-m-Y')); ?></p>
                     </div>
                     <div>
+                        <p class="text-sm font-medium italic opacity-50"><?php echo e(__('Fecha de Conclusión')); ?></p>
+                        <?php if($construction->work->completion_date): ?>
+                            <p><i class="fa-solid fa-calendar-check"></i> <?php echo e($construction->work->completion_date->format('d-m-Y')); ?> <span class="font-semibold italic text-success text-xs opacity-75"><?php echo e(__('(concluido)')); ?></span></p>
+                        <?php else: ?>
+                            <p class="font-semibold italic text-info text-sm+ opacity-75"><?php echo e(__('* En Ejecución...')); ?></p>
+                        <?php endif; ?>
+                    </div>
+                    <div>
                         <p class="text-sm font-medium italic opacity-50"><?php echo e(__('Descripción de la obra')); ?></p>
                         <p><?php echo e($construction->work->description); ?></p>
                     </div>
@@ -96,34 +104,57 @@
                 </div>
                 <div>
                     <div class="card p-5">
-                        <form action="<?php echo e(route('construction.materials.update', $construction->id)); ?>" method="post">
-                            <?php echo method_field('put'); ?>
-                            <?php echo csrf_field(); ?>
-                            <label class="block">
-                                <span class="text-sm+ font-bold">Seleccione los materiales para esta obra</span>
-                                <select
-                                x-init="$el._tom = new Tom($el,{plugins: ['caret_position','input_autogrow','remove_button']})"
-                                class="mt-1.5 w-full"
-                                multiple
-                                placeholder="Seleccione los materiales..."
-                                autocomplete="off"
-                                name="materials[]"
-                                >
-                                    <option value="" disabled>Seleccione los materiales...</option>
-                                    <?php $__currentLoopData = $materials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $material): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <option value="<?php echo e($material->id); ?>"
-                                            <?php echo e(in_array($material->id, $constructionHasMaterial) ? 'selected' : ''); ?>
+                        <?php if($construction->work->completion_date): ?>
+                            <div class="flex flex-col gap-2 text-center">
+                                <i class="fa-circle-info fa-solid fa-2x pr-1 text-info"></i>
+                                <p class="font-semibold italic text-sm opacity-80">
+                                    <?php echo e(__('Esta obra está concluida, por lo que ya no puede asignar nuevos materiales de construcción.')); ?>
 
-                                        ><?php echo e($material->name); ?></option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                </select>
-                            </label>
-            
-                            <button class="btn bg-success font-medium text-white hover:bg-success-focus hover:shadow-lg hover:shadow-success/50 focus:bg-success-focus focus:shadow-lg focus:shadow-success/50 active:bg-success-focus/90 mt-4">
-                                <?php echo e(__('Guardar')); ?>
+                                </p>
+                                <div class="text-xs opacity-50">
+                                    <p class="underline">
+                                        <?php echo e(__('(Si cree que existe alguna inconsistencia, por favor, comuníquese con el Director General.)')); ?>
 
-                            </button>
-                        </form>
+                                    </p>
+                                    <span class="text-sm">
+                                        <i class="fa-regular fa-hand-point-right px-0.5"></i>
+                                        <a href="https://api.whatsapp.com/send?phone=59176513094&text=hola,%20qué%20tal?" target="__blank"><i class="fa-brands fa-whatsapp text-success"></i></a>
+                                    </span>
+                                </div>
+                            </div>
+                        <?php else: ?>
+                            <form action="<?php echo e(route('construction.materials.update', $construction->id)); ?>" method="post" x-data="{ submitting: false }" x-on:submit="submitting = true; $nextTick(() => $refs.submitBtn.innerText = 'Guardando...')">
+                                <?php echo method_field('put'); ?>
+                                <?php echo csrf_field(); ?>
+                                <label class="block">
+                                    <span class="text-sm+ font-bold">Seleccione los materiales para esta obra</span>
+                                    <select
+                                    x-init="$el._tom = new Tom($el,{plugins: ['caret_position','input_autogrow','remove_button']})"
+                                    class="mt-1.5 w-full"
+                                    multiple
+                                    placeholder="Seleccione los materiales..."
+                                    autocomplete="off"
+                                    name="materials[]"
+                                    >
+                                        <option value="" disabled>Seleccione los materiales...</option>
+                                        <?php $__currentLoopData = $materials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $material): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($material->id); ?>"
+                                                <?php echo e(in_array($material->id, $constructionHasMaterial) ? 'selected' : ''); ?>
+
+                                            ><?php echo e($material->name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+                                </label>
+                
+                                <button
+                                    type="submit"
+                                    x-bind:class="{ 'opacity-50': submitting }"
+                                    x-bind:disabled="submitting"
+                                    x-ref="submitBtn"
+                                    class="btn bg-success font-medium text-white hover:bg-success-focus hover:shadow-lg hover:shadow-success/50 focus:bg-success-focus focus:shadow-lg focus:shadow-success/50 active:bg-success-focus/90 mt-4"
+                                ><i class="fa-solid fa-circle-check pr-1"></i><?php echo e(__('Guardar')); ?></button>
+                            </form>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -135,5 +166,6 @@
 <?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
 <?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
 <?php endif; ?>
+
 
 <?php /**PATH /var/www/html/resources/views/builders/allowances/assignment-materials.blade.php ENDPATH**/ ?>
