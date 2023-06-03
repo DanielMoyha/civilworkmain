@@ -1,30 +1,29 @@
 <div>
-    <?php if(session('status') === 'material-created'): ?>
+    <?php \Carbon\Carbon::setlocale(config('app.locale')); ?>
+    <?php if(session('status') === 'service-created'): ?>
         <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)">
         <div x-init="$notification({ text: 'Datos guardados exitosamente!', variant: 'success', position: 'right-top', duration: 2200 })"></div>
         </p>
     <?php endif; ?>
     <?php if(session('status') === 'cannot-deleted'): ?>
         <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 3500)">
-        <div x-init="$notification({ text: 'Una o varias obras tienen este material, no se puede eliminar!', variant: 'warning', position: 'right-top', duration: 3500 })"></div>
+        <div x-init="$notification({ text: 'Este servicio ya pertenece a una obra, no se puede eliminar!', variant: 'warning', position: 'right-top', duration: 3500 })"></div>
         </p>
     <?php endif; ?>
-    <?php if(session('status') === 'material-deleted'): ?>
-        <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2200)">
-        <div x-init="$notification({ text: 'Material Eliminado exitosamente!', variant: 'success', position: 'right-top', duration: 2200 })"></div>
+    <?php if(session('status') === 'service-deleted'): ?>
+        <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)">
+        <div x-init="$notification({ text: 'Servicio eliminado exitosamente!', variant: 'success', position: 'right-top', duration: 2200 })"></div>
         </p>
     <?php endif; ?>
 
     <?php if($updateMode): ?>
-        <?php echo $__env->make('builders.materials.edit', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        <?php echo $__env->make('admin.services.edit', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <?php else: ?>
-        <?php echo $__env->make('builders.materials.create', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        <?php echo $__env->make('admin.services.create', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <?php endif; ?>
-
-
     <div class="flex items-center justify-between mt-10">
         <h2 class="text-base font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100">
-            <?php echo e(__('Lista de materiales de construcción')); ?>
+            <?php echo e(__('Lista de servicios')); ?>
 
         </h2>
         <div class="flex">
@@ -73,17 +72,12 @@
                         </th>
                         <th
                             class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                            <?php echo e(__('Nombre del material')); ?>
+                            <?php echo e(__('Nombre del servicio')); ?>
 
                         </th>
                         <th
                             class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5 text-center">
-                            <?php echo e(__('Cantidad')); ?>
-
-                        </th>
-                        <th
-                            class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5 text-center">
-                            <?php echo e(__('Observaciones')); ?>
+                            <?php echo e(__('Fecha de creación')); ?>
 
                         </th>
                         <th
@@ -94,42 +88,32 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $__empty_1 = true; $__currentLoopData = $allMaterials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $material): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <?php $__empty_1 = true; $__currentLoopData = $allServices; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $service): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                         <tr class="border border-transparent border-b-slate-200 dark:border-b-navy-500" wire:loading.class='opacity-40'>
                             <td class="text-center"><?php echo e($loop->iteration); ?></td>
-                            <td><?php echo e($material->name); ?></td>
-                            <td class="text-center"> <?php echo e($material->quantity); ?></td>
-                            <td class="text-center">
-                                <?php if($material->remarks === '' or $material->remarks === null): ?>
-                                    <span class="decoration-sky-500/30">---</span>
-                                <?php endif; ?>
-                                <?php echo e($material->remarks); ?>
-
-                            </td>
+                            <td><?php echo e($service->name); ?></td>
+                            <td class="text-center"><i class="fa-solid fa-calendar-days"></i> <?php echo e($service->created_at->translatedFormat('j F Y')); ?></td>
                             <td class="flex justify-center items-center gap-2 py-2">
-                                <button wire:click="edit(<?php echo e($material->id); ?>)" class="btn bg-warning font-medium text-white hover:bg-warning-focus focus:bg-warning-focus active:bg-warning-focus/90 h-8 w-1"><i
+                                <button wire:click="edit(<?php echo e($service->id); ?>)" class="btn bg-warning font-medium text-white hover:bg-warning-focus focus:bg-warning-focus active:bg-warning-focus/90 h-8 w-1"><i
                                         class="fa-solid fa-pen-to-square fa-lg"></i></button>
-                                <button wire:click="$emit('showAlert', <?php echo e($material->id); ?>)" class="btn bg-error font-medium text-white hover:bg-error-focus focus:bg-error-focus active:bg-error-focus/90 h-8 w-1"><i
+                                <button wire:click="$emit('showAlert', <?php echo e($service->id); ?>)" class="btn bg-error font-medium text-white hover:bg-error-focus focus:bg-error-focus active:bg-error-focus/90 h-8 w-1"><i
                                         class="fa-solid fa-trash fa-lg"></i></button>
                             </td>
                         </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                         <tr>
-                            <td colspan="5">
+                            <td colspan="4">
                                 <div class="flex justify-center items-center space-x-2">
                                     <span class="h-8 w-8 text-cool-gray-400 text-3xl"><i class="fa-solid fa-inbox"></i></span>
-                                    <span class="font-medium py-8 text-cool-gray-400 text-xl"><?php echo e(__('Materiales de Construcción no encontrados...')); ?></span>
+                                    <span class="font-medium py-8 text-cool-gray-400 text-xl"><?php echo e(__('Servicios no encontrados...')); ?></span>
                                 </div>
                             </td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
-            <div class="">
-                <?php echo $allMaterials->links(); ?>
-
-            </div>
         </div>
+        <div><?php echo $allServices->links(); ?></div>
     </div>
 </div>
 <?php $__env->startPush('scripts'); ?>
@@ -137,10 +121,10 @@
     
     <script>
         // alert('g');
-        Livewire.on('showAlert', MaterialId => {
+        Livewire.on('showAlert', ServiceId => {
             Swal.fire({
-                title: '¿Eliminar Material?',
-                text: "El material se eliminará de forma permanente.",
+                title: '¿Eliminar Servicio?',
+                text: "El servicio se eliminará permanentemente",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -149,8 +133,8 @@
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Eliminar el material
-                    Livewire.emit('deleteMaterial', MaterialId);
+                    // Eliminar el servicio
+                    Livewire.emit('deleteService', ServiceId);
 
                     /* Swal.fire(
                         'Se eliminó el Servicio',
@@ -161,4 +145,5 @@
             })
         });
     </script>
-<?php $__env->stopPush(); ?><?php /**PATH /var/www/html/resources/views/livewire/materials.blade.php ENDPATH**/ ?>
+<?php $__env->stopPush(); ?>
+<?php /**PATH /var/www/html/resources/views/livewire/services.blade.php ENDPATH**/ ?>

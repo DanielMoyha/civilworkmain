@@ -65,7 +65,7 @@
                         <div class="flex flex-col gap-2 text-center items-center">
                             <i class="fa-circle-info fa-solid fa-2x pr-1 text-info"></i>
                             <p class="font-semibold italic text-sm opacity-80">
-                                <?php echo e(__('Esta obra está concluida, por lo que ya no puede registrar nuevos estudios extras para dicha obra.')); ?>
+                                <?php echo e(__('Esta obra está concluida, por lo que ya no puede registrar más tareas.')); ?>
 
                             </p>
                             <div class="text-xs opacity-50">
@@ -89,30 +89,30 @@
                 <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('create-task', ['supervision_id' => $supervision->id])->html();
-} elseif ($_instance->childHasBeenRendered('bouPkJn')) {
-    $componentId = $_instance->getRenderedChildComponentId('bouPkJn');
-    $componentTag = $_instance->getRenderedChildComponentTagName('bouPkJn');
+} elseif ($_instance->childHasBeenRendered('b3xq4cr')) {
+    $componentId = $_instance->getRenderedChildComponentId('b3xq4cr');
+    $componentTag = $_instance->getRenderedChildComponentTagName('b3xq4cr');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('bouPkJn');
+    $_instance->preserveRenderedChild('b3xq4cr');
 } else {
     $response = \Livewire\Livewire::mount('create-task', ['supervision_id' => $supervision->id]);
     $html = $response->html();
-    $_instance->logRenderedChild('bouPkJn', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('b3xq4cr', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>
                 <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('edit-task', ['supervision_id' => $supervision->id])->html();
-} elseif ($_instance->childHasBeenRendered('KqxzeSu')) {
-    $componentId = $_instance->getRenderedChildComponentId('KqxzeSu');
-    $componentTag = $_instance->getRenderedChildComponentTagName('KqxzeSu');
+} elseif ($_instance->childHasBeenRendered('7PN9AxN')) {
+    $componentId = $_instance->getRenderedChildComponentId('7PN9AxN');
+    $componentTag = $_instance->getRenderedChildComponentTagName('7PN9AxN');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('KqxzeSu');
+    $_instance->preserveRenderedChild('7PN9AxN');
 } else {
     $response = \Livewire\Livewire::mount('edit-task', ['supervision_id' => $supervision->id]);
     $html = $response->html();
-    $_instance->logRenderedChild('KqxzeSu', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('7PN9AxN', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>
@@ -120,30 +120,30 @@ echo $html;
                     <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('tasks', ['supervision_id' => $supervision->id])->html();
-} elseif ($_instance->childHasBeenRendered('y6FnZIH')) {
-    $componentId = $_instance->getRenderedChildComponentId('y6FnZIH');
-    $componentTag = $_instance->getRenderedChildComponentTagName('y6FnZIH');
+} elseif ($_instance->childHasBeenRendered('ZPL0C0p')) {
+    $componentId = $_instance->getRenderedChildComponentId('ZPL0C0p');
+    $componentTag = $_instance->getRenderedChildComponentTagName('ZPL0C0p');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('y6FnZIH');
+    $_instance->preserveRenderedChild('ZPL0C0p');
 } else {
     $response = \Livewire\Livewire::mount('tasks', ['supervision_id' => $supervision->id]);
     $html = $response->html();
-    $_instance->logRenderedChild('y6FnZIH', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('ZPL0C0p', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>
                     <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('completed-tasks', ['supervision_id' => $supervision->id])->html();
-} elseif ($_instance->childHasBeenRendered('C4mNqS9')) {
-    $componentId = $_instance->getRenderedChildComponentId('C4mNqS9');
-    $componentTag = $_instance->getRenderedChildComponentTagName('C4mNqS9');
+} elseif ($_instance->childHasBeenRendered('evUewbu')) {
+    $componentId = $_instance->getRenderedChildComponentId('evUewbu');
+    $componentTag = $_instance->getRenderedChildComponentTagName('evUewbu');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('C4mNqS9');
+    $_instance->preserveRenderedChild('evUewbu');
 } else {
     $response = \Livewire\Livewire::mount('completed-tasks', ['supervision_id' => $supervision->id]);
     $html = $response->html();
-    $_instance->logRenderedChild('C4mNqS9', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('evUewbu', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>

@@ -11,7 +11,6 @@
 
     <?php $__env->startSection('content'); ?>
 
-
     <main class="main-content w-full px-[var(--margin-x)] pb-8">
         <div class="flex items-center space-x-4 py-5 lg:py-6">
             <h2 class="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl"><?php echo e(__('Asignaciones')); ?></h2>
@@ -67,7 +66,7 @@
                                                 <p class="text-xs text-slate-300 italic dark:text-navy-500">
                                                     <?php echo e('hace ' . $work->updated_at->diffForHumans(null, true)); ?>
 
-                                                    </p>
+                                                </p>
                                                 <p class="text-slate-700 line-clamp-1 dark:text-navy-100">
                                                     <?php echo e($work->name); ?>
 
@@ -98,8 +97,10 @@
                                     <div x-collapse x-show="expanded">
                                         <div class="px-4 py-4 sm:px-5">
                                             <div class="flex justify-between">
-                                                <p class="text-slate-900 dark:text-navy-200 font-bold pb-2"><?php echo e($work->services->count() . ' SERVICIOS:'); ?></p>
+                                                <p class="text-slate-900 dark:text-navy-200 font-bold pb-2">
+                                                    <?php echo e($work->services->count() . __(' SERVICIOS:')); ?>
 
+                                                </p>
                                                 <div class="flex justify-end gap-2 text-xs mb-1">
                                                     <a href="<?php echo e(route('construction.materials', [$work->construction->id])); ?>" class="btn bg-accent dark:bg-success font-medium text-white hover:dark:bg-success-focus focus:dark:bg-success-focus active:dark:bg-success-focus/90 hover:bg-accent-focus focus:bg-accent-focus active:bg-accent-focus/90 px-2.5">
                                                         <i class="fa-solid fa-clipboard-list pr-2"></i> <?php echo e(__('Asignar Materiales')); ?>
@@ -136,7 +137,7 @@
                                             </div>
                                             <div>
                                                 <p class="text-xs text-slate-300 italic dark:text-navy-500">
-                                                    <?php echo e($work->updated_at->diffForHumans()); ?>
+                                                    <?php echo e('hace ' . $work->updated_at->diffForHumans(null, true)); ?>
 
                                                     </p>
                                                 <p class="text-slate-700 line-clamp-1 dark:text-navy-100">

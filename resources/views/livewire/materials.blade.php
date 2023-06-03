@@ -24,7 +24,7 @@
 
     <div class="flex items-center justify-between mt-10">
         <h2 class="text-base font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100">
-            {{ __('Lista de servicios') }}
+            {{ __('Lista de materiales de construcción') }}
         </h2>
         <div class="flex">
             <div class="flex items-center" x-data="{isInputActive:false}">

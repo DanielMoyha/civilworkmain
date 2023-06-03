@@ -113,7 +113,7 @@
                                 id="remarks"
                                 placeholder=" En caso de existir alguna observación sobre el material de construcción, descríbalo brevemente por favor..."
                                 class="form-textarea w-full resize-none rounded-lg bg-slate-150 p-2.5 placeholder:text-slate-400 dark:bg-navy-900 dark:placeholder:text-navy-300"
-                                ><?php echo e(old('remarks')); ?></textarea>
+                            ><?php echo e(old('remarks')); ?></textarea>
                             <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.input-error','data' => ['messages' => $errors->get('remarks'),'class' => 'mt-2']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('input-error'); ?>

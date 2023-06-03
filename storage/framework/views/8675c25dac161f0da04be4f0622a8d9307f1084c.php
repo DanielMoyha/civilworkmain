@@ -97,7 +97,10 @@
                             <p><i class="fa-solid fa-check"></i> <?php echo e($material->name); ?></p>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                         <div class="flex justify-center items-center gap-3">
-                            <p class="mt-2 italic font-bold text-sm+"><i class="fa-solid fa-inbox"></i> Sin materiales designados aún...</p>
+                            <p class="mt-2 italic font-bold text-sm+">
+                                <i class="fa-solid fa-inbox"></i> <?php echo e(__('Sin materiales designados aún...')); ?>
+
+                            </p>
                         </div>
                         <?php endif; ?>
                     </div>
@@ -145,7 +148,6 @@
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                 </label>
-                
                                 <button
                                     type="submit"
                                     x-bind:class="{ 'opacity-50': submitting }"

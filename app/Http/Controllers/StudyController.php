@@ -30,7 +30,7 @@ class StudyController extends Controller
     */
     public function e_assignments()
     {
-        $works = Work::where('user_id', auth()->user()->id)->orderByDesc('updated_at')->get();
+        $works = Work::where('user_id', auth()->user()->id)->orderBy('updated_at', 'asc')->get();
 
         return view('studies.assignments.index', [
             'works' => $works

@@ -58,7 +58,7 @@
                     </div>
                     <div class="mt-3">
                         <label class="block">
-                            <span class="mb"><?php echo e(__('Descripción')); ?><?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+                            <span class="mb-1"><?php echo e(__('Descripción')); ?><?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.asterisk','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('asterisk'); ?>
 <?php if ($component->shouldRender()): ?>

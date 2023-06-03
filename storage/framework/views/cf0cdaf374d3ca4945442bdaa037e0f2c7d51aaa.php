@@ -99,7 +99,7 @@
                                         <div class="px-4 py-4 sm:px-5">
                                             <div class="flex justify-between">
                                                 <p class="text-slate-900 dark:text-navy-200 font-bold pb-2">
-                                                    <?php echo e($work->services->count() . ' SERVICIOS:'); ?>
+                                                    <?php echo e($work->services->count() . __(' SERVICIOS:')); ?>
 
                                                 </p>
                                                 <div class="flex justify-end gap-2 text-xs mb-1">

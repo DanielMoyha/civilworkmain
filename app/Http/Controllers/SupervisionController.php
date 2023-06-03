@@ -30,7 +30,7 @@ class SupervisionController extends Controller
     */
     public function s_assignments()
     {
-        $works = Work::where('user_id', auth()->user()->id)->orderByDesc('updated_at')->get();
+        $works = Work::where('user_id', auth()->user()->id)->orderBy('updated_at', 'asc')->get();
 
         return view('supervisory.assignments.index', [
             'works' => $works
