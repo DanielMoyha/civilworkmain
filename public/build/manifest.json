@@ -1,8 +1,4 @@
 {
-  "resources/fonts/fontawesome/fa-regular-400.woff2": {
-    "file": "assets/fa-regular-400.fe69d948.woff2",
-    "src": "resources/fonts/fontawesome/fa-regular-400.woff2"
-  },
   "resources/fonts/fontawesome/fa-brands-400.woff2": {
     "file": "assets/fa-brands-400.c61287c2.woff2",
     "src": "resources/fonts/fontawesome/fa-brands-400.woff2"
@@ -10,6 +6,10 @@
   "resources/fonts/fontawesome/fa-solid-900.woff2": {
     "file": "assets/fa-solid-900.8f06540f.woff2",
     "src": "resources/fonts/fontawesome/fa-solid-900.woff2"
+  },
+  "resources/fonts/fontawesome/fa-regular-400.woff2": {
+    "file": "assets/fa-regular-400.fe69d948.woff2",
+    "src": "resources/fonts/fontawesome/fa-regular-400.woff2"
   },
   "resources/js/app.js": {
     "file": "assets/app.a34912bc.js",
@@ -22,12 +22,12 @@
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app.8aefb5f8.css",
+    "file": "assets/app.b44d8bfa.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/css/main.css": {
-    "file": "assets/main.4ab4627b.css",
+    "file": "assets/main.2dc6c9f4.css",
     "src": "resources/css/main.css",
     "isEntry": true
   }
